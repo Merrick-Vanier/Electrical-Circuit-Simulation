@@ -3,11 +3,163 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
 
 <TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ElectricalCircuitSimulationFXMLController">
    <tabs>
+      <Tab text="Resistors in series">
+         <content>
+            <BorderPane>
+               <right>
+                  <VBox prefHeight="569.0" prefWidth="179.0" BorderPane.alignment="CENTER">
+                     <children>
+                        <Label text="Circuit#1" />
+                        <Line endX="100.0" startX="-100.0" />
+                        <Label text="BatteryVoltage:" />
+                        <TextField prefHeight="26.0" />
+                        <Label text="Resistor #1 Value:" />
+                        <TextField />
+                        <Label text="Resistor#2 Value:" />
+                        <TextField />
+                        <Label text="R1 Voltage: 0" />
+                        <Label text="R2 Voltage: 0" />
+                        <Label text="Current: 0" />
+                        <Label text="Equivalent Resistance: 0" />
+                     </children>
+                  </VBox>
+               </right></BorderPane>
+         </content>
+      </Tab>
+      <Tab text="Resistors in parallel">
+         <content>
+            <BorderPane>
+               <right>
+                  <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+                     <children>
+                        <Label text="Circuit#2" />
+                        <Line endX="100.0" startX="-100.0" />
+                        <Label text="BatteryVoltage:" />
+                        <TextField prefHeight="26.0" />
+                        <Label text="Resistor #1 Value:" />
+                        <TextField />
+                        <Label text="Resistor#2 Value:" />
+                        <TextField />
+                        <Label text="R1 Current: 0" />
+                        <Label text="R2 Current: 0" />
+                        <Label text="Total Current: 0" />
+                        <Label text="Equivalent Resistance: 0" />
+                     </children>
+                  </VBox>
+               </right></BorderPane>
+         </content>
+      </Tab>
+      <Tab text="Capacitors in series">
+        <content>
+            <BorderPane>
+               <right>
+                  <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+                     <children>
+                        <Label text="Circuit#3" />
+                        <Line endX="100.0" startX="-100.0" />
+                        <Label text="BatteryVoltage:" />
+                        <TextField prefHeight="26.0" />
+                        <Label text="Capacitor #1 Value:" />
+                        <TextField />
+                        <Label text="Capacitor #2 Value:" />
+                        <TextField />
+                        <Label text="C1 Charge: 0" />
+                        <Label text="C1 Voltage: 0" />
+                        <Label text="C2 Charge: 0" />
+                        <Label text="C2 Voltage: 0" />
+                        <Label text="Total Charge: 0" />
+                        <Label text="Equivalent Capacitance: 0" />
+                     </children>
+                  </VBox>
+               </right></BorderPane>
+        </content>
+      </Tab>
+      <Tab text="Capacitors in parallel">
+         <content>
+            <BorderPane>
+               <right>
+                  <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+                     <children>
+                        <Label text="Circuit#4" />
+                        <Line endX="100.0" startX="-100.0" />
+                        <Label text="BatteryVoltage:" />
+                        <TextField prefHeight="26.0" />
+                        <Label text="Capacitor #1 Value:" />
+                        <TextField />
+                        <Label text="Capacitor #2 Value:" />
+                        <TextField />
+                        <Label text="C1 Charge: 0" />
+                        <Label text="C1 Voltage: 0" />
+                        <Label text="C2 Charge: 0" />
+                        <Label text="C2 Voltage: 0" />
+                        <Label text="Total Charge: 0" />
+                        <Label text="Equivalent Capacitance: 0" />
+                     </children>
+                  </VBox>
+               </right>
+            </BorderPane>
+         </content>
+      </Tab>
+      <Tab text="Resistors custom">
+         <content>
+            <BorderPane>
+               <right>
+                  <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+                     <children>
+                        <Label text="Circuit#6" />
+                        <Line endX="100.0" startX="-100.0" />
+                        <Label text="BatteryVoltage:" />
+                        <TextField prefHeight="26.0" />
+                        <Label text="Resistor #1 Value:" />
+                        <TextField />
+                        <Label text="Resistor#2 Value:" />
+                        <TextField />
+                        <Label text="R1 Voltage: 0" />
+                        <Label text="R1 Current: 0" />
+                        <Label text="R2 Voltage: 0" />
+                        <Label text="R2 Current:0" />
+                        <Label text="Total Current: 0" />
+                        <Label text="Equivalent Resistance: 0" />
+                     </children>
+                  </VBox>
+               </right>
+            </BorderPane>
+         </content>
+      </Tab>
+      <Tab text="Capacitors custom">
+         <content>
+            <BorderPane>
+               <right>
+                  <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+                     <children>
+                        <Label text="Circuit#4" />
+                        <Line endX="100.0" startX="-100.0" />
+                        <Label text="BatteryVoltage:" />
+                        <TextField prefHeight="26.0" />
+                        <Label text="Capacitor #1 Value:" />
+                        <TextField />
+                        <Label text="Capacitor #2 Value:" />
+                        <TextField />
+                        <Label text="C1 Charge: 0" />
+                        <Label text="C1 Voltage: 0" />
+                        <Label text="C2 Charge: 0" />
+                        <Label text="C2 Voltage: 0" />
+                        <Label text="Total Charge: 0" />
+                        <Label text="Equivalent Capacitance: 0" />
+                     </children>
+                  </VBox>
+               </right>
+            </BorderPane>
+         </content>
+      </Tab>
       <Tab text="Help">
          <content>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
@@ -15,48 +167,6 @@
                   <Label fx:id="helpText" layoutX="253.0" layoutY="158.0" text="Placeholder" />
                </children>
             </AnchorPane>
-         </content>
-      </Tab>
-      <Tab text="Resistors in series">
-         <content>
-            <BorderPane />
-         </content>
-      </Tab>
-      <Tab text="Resistors in parallel">
-         <content>
-            <BorderPane />
-         </content>
-      </Tab>
-      <Tab text="Capacitors in series">
-        <content>
-            <BorderPane />
-        </content>
-      </Tab>
-      <Tab text="Capacitors in parallel">
-         <content>
-            <BorderPane>
-               <center>
-                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-               </center>
-            </BorderPane>
-         </content>
-      </Tab>
-      <Tab text="Resistors custom">
-         <content>
-            <BorderPane>
-               <center>
-                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-               </center>
-            </BorderPane>
-         </content>
-      </Tab>
-      <Tab text="Capacitors custom">
-         <content>
-            <BorderPane>
-               <center>
-                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-               </center>
-            </BorderPane>
          </content>
       </Tab>
    </tabs>
