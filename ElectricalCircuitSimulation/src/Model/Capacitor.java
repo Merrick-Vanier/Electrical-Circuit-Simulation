@@ -8,11 +8,12 @@ package Model;
  *
  * @author CoolHandLuke
  */
-public class Capacitor {
+public class Capacitor extends CircuitElement {
    private double capacitance;
    private double charge;
    
-   public Capacitor(double capacitance, double charge) {
+   public Capacitor(double capacitance, double charge, double voltage) {
+       super(voltage);
        this.capacitance = capacitance;
        this.charge = charge;
    }

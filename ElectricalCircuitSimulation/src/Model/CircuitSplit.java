@@ -6,11 +6,11 @@ package Model;
 
 /**
  *
- * @author merri
+ * @author 6237800
  */
-public class Battery extends CircuitElement {
+public class CircuitSplit extends CircuitElement {
     
-    public Battery(double voltage) {
+    public CircuitSplit(double voltage) {
         super(voltage);
     }
     

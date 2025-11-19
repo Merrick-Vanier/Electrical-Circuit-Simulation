@@ -8,11 +8,12 @@ package Model;
  *
  * @author CoolHandLuke
  */
-public class Resistor {
+public class Resistor extends CircuitElement {
     private double resistance;
     private double current;
     
-    public Resistor(double resistance, double current) {
+    public Resistor(double resistance, double current, double voltage) {
+        super(voltage);
         this.resistance = resistance;
         this.current = current;
     }
