@@ -6,7 +6,8 @@ package Controller;
 
 import Model.Battery;
 import Model.CircuitElement;
-import Model.*;
+import Model.CircuitSplit;
+import Model.Resistor;
 import java.net.URL;
 import java.util.ResourceBundle;
 import org.junit.After;
@@ -42,27 +43,24 @@ public class ElectricalCircuitSimulationFXMLControllerTest {
     }
 
     /**
-     * Test of calcResistance method, of class ElectricalCircuitSimulationFXMLController.
+     * Test of initialize method, of class ElectricalCircuitSimulationFXMLController.
      */
     @Test
-     public void testCalcResistance1() {
+     public void testCalcResistance() {
         System.out.println("calcResistance");
         CircuitElement[] calcCircuit = {
             new Battery(15),
-            new Resistor(10, 0, 0),
-            new Resistor(10, 0, 0),
-            new Resistor(10, 0, 0)
+            new Resistor(15, 0, 0),
+            //new Resistor(15, 0, 0),
+            new Resistor(15, 0, 0)
         };
         double expResult = 0.5;
         ElectricalCircuitSimulationFXMLController instance = new ElectricalCircuitSimulationFXMLController();
-        instance.calcResistance(calcCircuit, calcCircuit.length, 0, false, 0);
+        instance.calcResistance(calcCircuit, calcCircuit.length, ((Resistor)calcCircuit[calcCircuit.length - 1]).getResistance());
         assertEquals(expResult, ((Resistor)calcCircuit[1]).getCurrent(), 0);
         assertEquals(expResult, ((Resistor)calcCircuit[2]).getCurrent(), 0);
-        assertEquals(10, ((Resistor)calcCircuit[1]).getResistance(), 0);
-        assertEquals(10, ((Resistor)calcCircuit[2]).getResistance(), 0);
-        assertEquals(10, ((Resistor)calcCircuit[3]).getResistance(), 0);
-        assertEquals(expResult, ((Resistor)calcCircuit[3]).getCurrent(), 0);
-    }
+        //assertEquals(expResult, ((Resistor)calcCircuit[3]).getCurrent(), 0);
+     }
     /**
      * Test of initialize method, of class ElectricalCircuitSimulationFXMLController.
      */

@@ -37,9 +37,9 @@ public class ElectricalCircuitSimulationFXMLController implements Initializable 
 
     
     CircuitElement[] circuit1 = {
-        new Battery(0), 
-        new Resistor(0, 0, 0),
-        new Resistor(0, 0, 0)
+        new Battery(15), 
+        new Resistor(15, 0, 0),
+        new Resistor(15, 0, 0)
     };
     @FXML
     private Slider b1_slider;
@@ -258,6 +258,23 @@ public class ElectricalCircuitSimulationFXMLController implements Initializable 
     private void csCalcBtnPressed(ActionEvent event) {
     }
     
+    /**
+     * UPDATE THIS I CAN'T TYPE IT RIGHT NOW IM SO TIRED
+     * @param calcCircuit
+     * @param circuitSize
+     * @param finalResistance 
+     */
+    public void calcResistance(CircuitElement[] calcCircuit, int circuitSize, double finalResistance) {
+        ((Resistor)calcCircuit[circuitSize - 1]).setResistance(finalResistance);
+        if (circuitSize == 2) {
+            ((Resistor) calcCircuit[1]).setCurrent(calcCircuit[0].getVoltage() / ((Resistor) calcCircuit[1]).getResistance());
+        }
+        else {
+            double i = ((Resistor)calcCircuit[circuitSize - 1]).getResistance() + ((Resistor)calcCircuit[circuitSize - 2]).getResistance();
+            calcResistance(calcCircuit, circuitSize - 1, i);
+            ((Resistor) calcCircuit[circuitSize - 1]).setCurrent(((Resistor)calcCircuit[circuitSize - 2]).getCurrent());
+        }
+    }
     
 
 
