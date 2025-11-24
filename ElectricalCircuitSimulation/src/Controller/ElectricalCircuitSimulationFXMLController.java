@@ -6,6 +6,7 @@ package Controller;
 
 import Model.Battery;
 import Model.CircuitElement;
+import Model.CircuitSplit;
 import Model.Resistor;
 import java.net.URL;
 import java.util.Arrays;
@@ -213,31 +214,7 @@ public class ElectricalCircuitSimulationFXMLController implements Initializable 
         bindSliderToTextField(cp_C1_slider, cp_C1_tf);
         bindSliderToTextField(cp_C2_slider, cp_C2_tf);
         
-    }    
-    
-    /**
-     * 
-     * @param calcCircuit
-     * @return 
-     */
-    public double calcResistance(CircuitElement[] calcCircuit) {
-        if (calcCircuit.length == 2) {
-            return calcCircuit[0].getVoltage()/((Resistor) calcCircuit[1]).getResistance(); 
-        }
-        else {
-            CircuitElement[] equivalentCircuit = Arrays.copyOf(calcCircuit, calcCircuit.length - 1);
-            ((Resistor)equivalentCircuit[equivalentCircuit.length - 1]).setResistance(
-                    ((Resistor)calcCircuit[calcCircuit.length - 1]).getResistance() 
-                            + ((Resistor)calcCircuit[calcCircuit.length - 2]).getResistance());
-            ((Resistor)calcCircuit[calcCircuit.length - 1]).setCurrent(calcResistance(equivalentCircuit));
-        }
-        return 0;
     }
-
-    
-
-    
-
 
     @FXML
     private void rsClearBtnPressed(ActionEvent event) {
@@ -359,7 +336,87 @@ public class ElectricalCircuitSimulationFXMLController implements Initializable 
     });
 }
 
-    
+/**
+     * UPDATE THIS I CAN'T TYPE IT RIGHT NOW IM SO TIRED
+     * @param calcCircuit
+     * @param circuitSize
+     * @param finalResistance 
+     */
+    public void calcResistance(CircuitElement[] calcCircuit, int circuitSize, double finalResistance, boolean isSplit, double splitResistance) {
+        double store;
+        if (circuitSize == 2) {
+            store = ((Resistor) calcCircuit[circuitSize - 1]).getResistance();
+            ((Resistor)calcCircuit[circuitSize - 1]).setResistance(finalResistance);
+            ((Resistor)calcCircuit[1]).setCurrent(calcCircuit[0].getVoltage() / ((Resistor) calcCircuit[1]).getResistance());
+            ((Resistor)calcCircuit[circuitSize - 1]).setResistance(store);
+            ((Resistor)calcCircuit[circuitSize - 1]).setVoltage(((Resistor)calcCircuit[circuitSize - 1]).getCurrent() * ((Resistor) calcCircuit[1]).getResistance());
+        }
+        //if next circuitElement is a split
+        else if (calcCircuit[circuitSize - 1] instanceof CircuitSplit) {
+            //if 2nd to next Circuit element is a resistor and if this is 1st split path
+            if (calcCircuit[circuitSize - 2] instanceof Resistor && isSplit == false) {
+                store = ((Resistor) calcCircuit[circuitSize - 2]).getResistance();
+                //if 3rd to next element is the end of the 1st split
+                if (calcCircuit[circuitSize - 3] instanceof CircuitSplit) {
+                    double equResistor = ((Resistor)calcCircuit[circuitSize - 2]).getResistance();
+                    calcResistance(calcCircuit, circuitSize - 2, finalResistance, true, equResistor);
+                }
+                //if 3rd to next element is a resistor
+                else {
+                    double equResistor = ((Resistor)calcCircuit[circuitSize - 2]).getResistance() + ((Resistor)calcCircuit[circuitSize - 3]).getResistance();
+                    calcResistance(calcCircuit, circuitSize - 1, finalResistance, false, equResistor);
+                }
+                ((Resistor)calcCircuit[circuitSize - 2]).setResistance(store);
+                
+            }
+            //if 2nd to next element is a resistor and this is the 2nd split path
+            else if (calcCircuit[circuitSize - 2] instanceof Resistor){
+                store = ((Resistor) calcCircuit[circuitSize - 2]).getResistance();
+                //if 3rd to next element is the end of the second split
+                if (calcCircuit[circuitSize - 3] instanceof CircuitSplit) {
+                    //if 1st split had a resistor
+                    if (splitResistance != 0) {
+                        //equiResistor here equals to the 1/Req = 1/R1 + 1/R2
+                        double equResistor = Math.pow((1/((Resistor)calcCircuit[circuitSize - 2]).getResistance() + 1/splitResistance), -1);
+                        equResistor += finalResistance;
+                        calcResistance(calcCircuit, circuitSize - 2, equResistor, false, 0);
+                    }
+                    //make sure this gets the voltage from the right circuit element
+                    if (calcCircuit[circuitSize - 4] instanceof Resistor) {
+                        ((Resistor)calcCircuit[circuitSize - 2]).setVoltage(((Resistor)calcCircuit[circuitSize - 4]).getVoltage());
+                    }
+                }
+                //if 3rd to next element is a resistor
+                else {
+                    double equResistor = ((Resistor)calcCircuit[circuitSize - 2]).getResistance() + ((Resistor)calcCircuit[circuitSize - 3]).getResistance();
+                    calcResistance(calcCircuit, circuitSize - 1, finalResistance, false, equResistor);
+                }
+                ((Resistor)calcCircuit[circuitSize - 2]).setResistance(store);
+            }
+            //case for if a circuit's split has no resistors
+            else {
+                
+            }
+        }
+        //if the next element is a resistor
+        else {
+            //if the 2nd to next element is a resistor
+            if (calcCircuit[circuitSize - 2] instanceof Resistor) {
+                store = ((Resistor) calcCircuit[circuitSize - 1]).getResistance();
+                if (circuitSize == calcCircuit.length) finalResistance = store;
+                ((Resistor)calcCircuit[circuitSize - 1]).setResistance(finalResistance);
+                double equResistor = ((Resistor)calcCircuit[circuitSize - 1]).getResistance() + ((Resistor)calcCircuit[circuitSize - 2]).getResistance();
+                calcResistance(calcCircuit, circuitSize - 1, equResistor, isSplit, splitResistance);
+                ((Resistor)calcCircuit[circuitSize - 1]).setCurrent(((Resistor)calcCircuit[circuitSize - 2]).getCurrent());
+                ((Resistor)calcCircuit[circuitSize - 1]).setResistance(store);
+                ((Resistor)calcCircuit[circuitSize - 1]).setVoltage(((Resistor)calcCircuit[circuitSize - 1]).getCurrent() * ((Resistor) calcCircuit[1]).getResistance());
+            }
+            //if the 2nd to next element is a circuitSplit
+            else {
+                
+            }
+        }
+    }   
 
     
     

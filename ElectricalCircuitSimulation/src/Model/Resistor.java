@@ -4,6 +4,8 @@
  */
 package Model;
 
+import java.util.Arrays;
+
 /**
  *
  * @author CoolHandLuke
