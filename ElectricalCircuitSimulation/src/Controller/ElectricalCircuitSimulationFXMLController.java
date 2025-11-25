@@ -10,6 +10,7 @@ import Model.Resistor;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.ResourceBundle;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -17,6 +18,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 
 /**
  * FXML Controller class
@@ -205,5 +207,120 @@ public class ElectricalCircuitSimulationFXMLController implements Initializable 
         }
         return 0;
     }
+
+    @FXML
+    private void B1Dragged(MouseEvent event) {
+        String str = "" + b1_slider.getValue();
+                
+        b1_tf.setText(str);
+    }
+
+    @FXML
+    private void B1Typed(ActionEvent event) {
+        double db = Double.parseDouble(b1_tf.getText());
+        b1_slider.setValue(db);
+    }
+
+    @FXML
+    private void rsR1Slide(MouseEvent event) {
+        String str = "" + rs_R1_slider.getValue();
+                
+        rs_R1_tf.setText(str);
+    }
+
+    @FXML
+    private void rsR1Typed(ActionEvent event) {
+        double db = Double.parseDouble(rs_R1_tf.getText());
+        rs_R1_slider.setValue(db);
+    }
+
+    @FXML
+    private void rsR2Slide(MouseEvent event) {
+        String str = "" + rs_R2_slider.getValue();
+                
+        rs_R2_tf.setText(str);
+    }
+
+    @FXML
+    private void rsR2Typed(ActionEvent event) {
+        double db = Double.parseDouble(rs_R2_tf.getText());
+        rs_R2_slider.setValue(db);
+    }
+
+
+    @FXML
+    private void rsClearBtnPressed(ActionEvent event) {
+        b1_slider.setValue(20);
+        b1_tf.setText(null);
+        rs_R1_slider.setValue(20);
+        rs_R1_tf.setText(null);
+        rs_R2_slider.setValue(20);
+        rs_R2_tf.setText(null);
+    }
+
+
+    @FXML
+    private void B2Slide(MouseEvent event) {
+        String str = "" + b2_slider.getValue();
+                
+        b2_tf.setText(str);
+    }
+
+    @FXML
+    private void B2Typed(ActionEvent event) {
+         double db = Double.parseDouble(b2_tf.getText());
+        b2_slider.setValue(db);
+    }
+
+    @FXML
+    private void rpR1Slide(MouseEvent event) {
+        String str = "" + rp_R1_slider.getValue();
+                
+        rp_R1_tf.setText(str);
+    }
+
+    @FXML
+    private void rpR1Typed(ActionEvent event) {
+        double db = Double.parseDouble(rp_R1_tf.getText());
+        rp_R1_slider.setValue(db);
+    }
+
+    @FXML
+    private void rpR2Slide(MouseEvent event) {
+        String str = "" + rp_R2_slider.getValue();
+                
+        rp_R2_tf.setText(str);
+    }
+    @FXML
+    private void rpR2Typed(ActionEvent event) {
+        double db = Double.parseDouble(rp_R2_tf.getText());
+        rp_R2_slider.setValue(db);
+    }
+
+    
+
+
+    @FXML
+    private void rpClearBtnPressed(ActionEvent event) {
+        b2_slider.setValue(20);
+        b2_tf.setText(null);
+        rp_R1_slider.setValue(20);
+        rp_R1_tf.setText(null);
+        rp_R2_slider.setValue(20);
+        rp_R2_tf.setText(null);
+    }
+
+    @FXML
+    private void rsCalcBtnPreesed(ActionEvent event) {
+    }
+
+    
+
+    @FXML
+    private void rpCalcBtnPressed(ActionEvent event) {
+    }
+
+    
+
     
 }
