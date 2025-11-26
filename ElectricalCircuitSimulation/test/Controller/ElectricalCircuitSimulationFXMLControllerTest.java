@@ -50,13 +50,13 @@ public class ElectricalCircuitSimulationFXMLControllerTest {
         System.out.println("calcResistance");
         CircuitElement[] calcCircuit = {
             new Battery(15),
-            new Resistor(15, 0, 0),
-            //new Resistor(15, 0, 0),
-            new Resistor(15, 0, 0)
+            new Resistor(10, 0, 0),
+            new Resistor(10, 0, 0),
+            new Resistor(10, 0, 0)
         };
         double expResult = 0.5;
         ElectricalCircuitSimulationFXMLController instance = new ElectricalCircuitSimulationFXMLController();
-        instance.calcResistance(calcCircuit, calcCircuit.length, ((Resistor)calcCircuit[calcCircuit.length - 1]).getResistance());
+        instance.calcResistance(calcCircuit, calcCircuit.length, 0, false, 0);
         assertEquals(expResult, ((Resistor)calcCircuit[1]).getCurrent(), 0);
         assertEquals(expResult, ((Resistor)calcCircuit[2]).getCurrent(), 0);
         //assertEquals(expResult, ((Resistor)calcCircuit[3]).getCurrent(), 0);

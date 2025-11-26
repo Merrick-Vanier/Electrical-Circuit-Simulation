@@ -265,14 +265,26 @@ public class ElectricalCircuitSimulationFXMLController implements Initializable 
      * @param finalResistance 
      */
     public void calcResistance(CircuitElement[] calcCircuit, int circuitSize, double finalResistance) {
-        ((Resistor)calcCircuit[circuitSize - 1]).setResistance(finalResistance);
+        double store;
         if (circuitSize == 2) {
+            store = ((Resistor) calcCircuit[circuitSize - 1]).getResistance();
+            ((Resistor)calcCircuit[circuitSize - 1]).setResistance(finalResistance);
             ((Resistor) calcCircuit[1]).setCurrent(calcCircuit[0].getVoltage() / ((Resistor) calcCircuit[1]).getResistance());
+            ((Resistor)calcCircuit[circuitSize - 1]).setResistance(store);
+        }
+        else if (calcCircuit[circuitSize - 1] instanceof CircuitSplit) {
+            if (calcCircuit[circuitSize - 2] instanceof Resistor) {
+                double equResistor = ((Resistor)calcCircuit[circuitSize - 2]).getResistance();
+                calcResistance(calcCircuit, circuitSize - 1, equResistor);
+            }
         }
         else {
-            double i = ((Resistor)calcCircuit[circuitSize - 1]).getResistance() + ((Resistor)calcCircuit[circuitSize - 2]).getResistance();
-            calcResistance(calcCircuit, circuitSize - 1, i);
+            store = ((Resistor) calcCircuit[circuitSize - 1]).getResistance();
+            ((Resistor)calcCircuit[circuitSize - 1]).setResistance(finalResistance);
+            double equResistor = ((Resistor)calcCircuit[circuitSize - 1]).getResistance() + ((Resistor)calcCircuit[circuitSize - 2]).getResistance();
+            calcResistance(calcCircuit, circuitSize - 1, equResistor);
             ((Resistor) calcCircuit[circuitSize - 1]).setCurrent(((Resistor)calcCircuit[circuitSize - 2]).getCurrent());
+            ((Resistor)calcCircuit[circuitSize - 1]).setResistance(store);
         }
     }
     
