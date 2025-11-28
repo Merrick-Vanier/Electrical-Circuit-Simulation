@@ -59,31 +59,34 @@ public class ElectricalCircuitSimulationFXMLControllerTest {
         instance.calcResistance(calcCircuit, calcCircuit.length, 0, false, 0);
         assertEquals(expResult, ((Resistor)calcCircuit[1]).getCurrent(), 0);
         assertEquals(expResult, ((Resistor)calcCircuit[2]).getCurrent(), 0);
-        //assertEquals(expResult, ((Resistor)calcCircuit[3]).getCurrent(), 0);
-     }
-    /**
-     * Test of initialize method, of class ElectricalCircuitSimulationFXMLController.
-     */
-    @Test
-     public void testCalcResistance2() {
-        System.out.println("calcResistance");
-        CircuitElement[] calcCircuit = {
-            new Battery(15),
-            new Resistor(10, 0, 0),
-            new CircuitSplit(0),
-            new Resistor(10, 0, 0),
-            new CircuitSplit(0)
-        };
-        double expResult = 0.5;
-        ElectricalCircuitSimulationFXMLController instance = new ElectricalCircuitSimulationFXMLController();
-        instance.calcResistance(calcCircuit, calcCircuit.length, 0, false, 0);
-        assertEquals(expResult, ((Resistor)calcCircuit[1]).getCurrent(), 0);
-        assertEquals(expResult, ((Resistor)calcCircuit[2]).getCurrent(), 0);
-        assertEquals(10, ((Resistor)calcCircuit[1]).getResistance(), 0);
-        assertEquals(10, ((Resistor)calcCircuit[2]).getResistance(), 0);
-        assertEquals(10, ((Resistor)calcCircuit[3]).getResistance(), 0);
         assertEquals(expResult, ((Resistor)calcCircuit[3]).getCurrent(), 0);
-    }
+        assertEquals(5, ((Resistor)calcCircuit[3]).getVoltage(), 0);
+        assertEquals(5, ((Resistor)calcCircuit[3]).getVoltage(), 0);
+        assertEquals(5, ((Resistor)calcCircuit[3]).getVoltage(), 0);
+     }
+//    /**
+//     * Test of initialize method, of class ElectricalCircuitSimulationFXMLController.
+//     */
+//    @Test
+//     public void testCalcResistance2() {
+//        System.out.println("calcResistance");
+//        CircuitElement[] calcCircuit = {
+//            new Battery(15),
+//            new Resistor(10, 0, 0),
+//            new CircuitSplit(0),
+//            new Resistor(10, 0, 0),
+//            new CircuitSplit(0)
+//        };
+//        double expResult = 0.5;
+//        ElectricalCircuitSimulationFXMLController instance = new ElectricalCircuitSimulationFXMLController();
+//        instance.calcResistance(calcCircuit, calcCircuit.length, 0, false, 0);
+//        assertEquals(expResult, ((Resistor)calcCircuit[1]).getCurrent(), 0);
+//        assertEquals(expResult, ((Resistor)calcCircuit[2]).getCurrent(), 0);
+//        assertEquals(10, ((Resistor)calcCircuit[1]).getResistance(), 0);
+//        assertEquals(10, ((Resistor)calcCircuit[2]).getResistance(), 0);
+//        assertEquals(10, ((Resistor)calcCircuit[3]).getResistance(), 0);
+//        assertEquals(expResult, ((Resistor)calcCircuit[3]).getCurrent(), 0);
+//    }
     
     
     

@@ -361,13 +361,17 @@ public class ElectricalCircuitSimulationFXMLController implements Initializable 
                 if (calcCircuit[circuitSize - 3] instanceof CircuitSplit) {
                     double equResistor = ((Resistor)calcCircuit[circuitSize - 2]).getResistance();
                     calcResistance(calcCircuit, circuitSize - 2, finalResistance, true, equResistor);
+                    //((Resistor) calcCircuit[circuitSize - 2]).setVoltage();
                 }
                 //if 3rd to next element is a resistor
                 else {
                     double equResistor = ((Resistor)calcCircuit[circuitSize - 2]).getResistance() + ((Resistor)calcCircuit[circuitSize - 3]).getResistance();
                     calcResistance(calcCircuit, circuitSize - 1, finalResistance, false, equResistor);
+                    ((Resistor) calcCircuit[circuitSize - 2]).setVoltage(calcCircuit[circuitSize - 3].getVoltage());
                 }
                 ((Resistor)calcCircuit[circuitSize - 2]).setResistance(store);
+                ((Resistor)calcCircuit[circuitSize - 2]).setCurrent(((Resistor)calcCircuit[circuitSize - 2]).getVoltage() / ((Resistor) calcCircuit[1]).getResistance());
+                
                 
             }
             //if 2nd to next element is a resistor and this is the 2nd split path
@@ -410,7 +414,7 @@ public class ElectricalCircuitSimulationFXMLController implements Initializable 
                 calcResistance(calcCircuit, circuitSize - 1, equResistor, isSplit, splitResistance);
                 ((Resistor)calcCircuit[circuitSize - 1]).setCurrent(((Resistor)calcCircuit[circuitSize - 2]).getCurrent());
                 ((Resistor)calcCircuit[circuitSize - 1]).setResistance(store);
-                ((Resistor)calcCircuit[circuitSize - 1]).setVoltage(((Resistor)calcCircuit[circuitSize - 1]).getCurrent() * ((Resistor) calcCircuit[1]).getResistance());
+                ((Resistor)calcCircuit[circuitSize - 1]).setVoltage(((Resistor)calcCircuit[circuitSize - 1]).getCurrent() * ((Resistor) calcCircuit[circuitSize - 1]).getResistance());
             }
             //if the 2nd to next element is a circuitSplit
             else {
