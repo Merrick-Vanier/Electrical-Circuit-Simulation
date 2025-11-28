@@ -18,7 +18,11 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
 
 /**
  * FXML Controller class
@@ -180,13 +184,35 @@ public class ElectricalCircuitSimulationFXMLController implements Initializable 
     private Button cc_calcBtn;
     @FXML
     private Button cc_clearBtn;
+    @FXML
+    private VBox resistorVbox;
+    @FXML
+    private VBox rcSidebarVbox;
+    private int counter;
     
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        counter = 0;
+        
+        bindSliderToTextField(b1_slider, b1_tf);
+        bindSliderToTextField(rs_R1_slider, rs_R1_tf);
+        bindSliderToTextField(rs_R2_slider, rs_R2_tf);
+
+        bindSliderToTextField(b2_slider, b2_tf);
+        bindSliderToTextField(rp_R1_slider, rp_R1_tf);
+        bindSliderToTextField(rp_R2_slider, rp_R2_tf);
+
+        bindSliderToTextField(b3_slider, b3_tf);
+        bindSliderToTextField(cs_C1_slider, cs_C1_tf);
+        bindSliderToTextField(cs_C2_slider, cs_C2_tf);
+
+        bindSliderToTextField(b4_slider, b4_tf);
+        bindSliderToTextField(cp_C1_slider, cp_C1_tf);
+        bindSliderToTextField(cp_C2_slider, cp_C2_tf);
+        
     }    
     
     /**
@@ -208,44 +234,9 @@ public class ElectricalCircuitSimulationFXMLController implements Initializable 
         return 0;
     }
 
-    @FXML
-    private void B1Dragged(MouseEvent event) {
-        String str = "" + b1_slider.getValue();
-                
-        b1_tf.setText(str);
-    }
+    
 
-    @FXML
-    private void B1Typed(ActionEvent event) {
-        double db = Double.parseDouble(b1_tf.getText());
-        b1_slider.setValue(db);
-    }
-
-    @FXML
-    private void rsR1Slide(MouseEvent event) {
-        String str = "" + rs_R1_slider.getValue();
-                
-        rs_R1_tf.setText(str);
-    }
-
-    @FXML
-    private void rsR1Typed(ActionEvent event) {
-        double db = Double.parseDouble(rs_R1_tf.getText());
-        rs_R1_slider.setValue(db);
-    }
-
-    @FXML
-    private void rsR2Slide(MouseEvent event) {
-        String str = "" + rs_R2_slider.getValue();
-                
-        rs_R2_tf.setText(str);
-    }
-
-    @FXML
-    private void rsR2Typed(ActionEvent event) {
-        double db = Double.parseDouble(rs_R2_tf.getText());
-        rs_R2_slider.setValue(db);
-    }
+    
 
 
     @FXML
@@ -259,43 +250,7 @@ public class ElectricalCircuitSimulationFXMLController implements Initializable 
     }
 
 
-    @FXML
-    private void B2Slide(MouseEvent event) {
-        String str = "" + b2_slider.getValue();
-                
-        b2_tf.setText(str);
-    }
-
-    @FXML
-    private void B2Typed(ActionEvent event) {
-         double db = Double.parseDouble(b2_tf.getText());
-        b2_slider.setValue(db);
-    }
-
-    @FXML
-    private void rpR1Slide(MouseEvent event) {
-        String str = "" + rp_R1_slider.getValue();
-                
-        rp_R1_tf.setText(str);
-    }
-
-    @FXML
-    private void rpR1Typed(ActionEvent event) {
-        double db = Double.parseDouble(rp_R1_tf.getText());
-        rp_R1_slider.setValue(db);
-    }
-
-    @FXML
-    private void rpR2Slide(MouseEvent event) {
-        String str = "" + rp_R2_slider.getValue();
-                
-        rp_R2_tf.setText(str);
-    }
-    @FXML
-    private void rpR2Typed(ActionEvent event) {
-        double db = Double.parseDouble(rp_R2_tf.getText());
-        rp_R2_slider.setValue(db);
-    }
+    
 
     
 
@@ -314,13 +269,99 @@ public class ElectricalCircuitSimulationFXMLController implements Initializable 
     private void rsCalcBtnPreesed(ActionEvent event) {
     }
 
-    
-
     @FXML
     private void rpCalcBtnPressed(ActionEvent event) {
     }
+    
+    @FXML
+    private void cpCalcBtnPressed(ActionEvent event) {
+    }
+    
+    @FXML
+    private void csCalcBtnPressed(ActionEvent event) {
+    }
+    
+    
+
+
+
+
+    @FXML
+    private void csClearBtnPressed(ActionEvent event) {
+        b3_slider.setValue(20);
+        b3_tf.setText(null);
+        cs_C1_slider.setValue(20);
+        cs_C1_tf.setText(null);
+        cs_C2_slider.setValue(20);
+        cs_C2_tf.setText(null);
+    }
+
+   
+
+    
+
+
+    @FXML
+    private void cpClearBtnPressed(ActionEvent event) {
+        b4_slider.setValue(20);
+        b4_tf.setText(null);
+        cp_C1_slider.setValue(20);
+        cp_C1_tf.setText(null);
+        cp_C2_slider.setValue(20);
+        cp_C2_tf.setText(null);
+    }
+
+    @FXML
+    private void rcAddBtnPressed(ActionEvent event) {
+        
+        VBox testvb = resistorVbox;
+        testvb.setVisible(true);
+        rcSidebarVbox.getChildren().add(counter, helpText);
+        counter++;
+        
+        
+        
+    }
+    private void bindSliderToTextField(Slider slider, TextField textField) {
+         textField.addEventFilter(KeyEvent.KEY_TYPED, event -> {
+        String ch = event.getCharacter();
+
+        
+        if (ch.matches("[0-9]")) return;
+
+       
+        if (ch.equals(".") && !textField.getText().contains(".")) return;
+
+       
+        if (ch.isEmpty()) return;
+
+        
+        event.consume();
+    });
+
+   slider.valueProperty().addListener((obs, oldValue, newValue) -> {
+        String formatted = String.format("%.2f", newValue.doubleValue());
+        if (!textField.getText().equals(formatted)) {
+            textField.setText(formatted);
+        }
+    });
+    textField.setOnAction(e -> {
+        String text = textField.getText();
+
+        if (text.matches("\\d+(\\.\\d+)?")) {
+            double value = Double.parseDouble(text);
+
+            if (value < slider.getMin()) value = slider.getMin();
+            if (value > slider.getMax()) value = slider.getMax();
+
+            slider.setValue(value);
+        }
+    });
+}
 
     
 
     
+    
+   
 }
