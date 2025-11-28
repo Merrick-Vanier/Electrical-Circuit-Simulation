@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Line?>
 
-<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ElectricalCircuitSimulationFXMLController">
+<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ElectricalCircuitSimulationFXMLController">
    <tabs>
       <Tab text="Resistors in series">
          <content>
@@ -26,19 +26,19 @@
                         <Label text="Resistors in Series" />
                         <Line endX="100.0" startX="-100.0" />
                         <Label text="Battery Voltage:" />
-                        <Slider fx:id="b1_slider" min="10.0" value="20.0" />
+                        <Slider fx:id="b1_slider" min="10.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="20.0" />
                         <TextField fx:id="b1_tf" />
                         <Line endX="100.0" startX="-100.0" />
                         <Label text="Resistor #1 Values:" />
                         <Label text="Resistance:" />
-                        <Slider fx:id="rs_R1_slider" min="10.0" value="20.0" />
+                        <Slider fx:id="rs_R1_slider" min="10.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="20.0" />
                         <TextField fx:id="rs_R1_tf" />
                         <Label fx:id="rs_R1_V" text="Voltage: 0" />
                         <Label fx:id="rs_R1_C" text="Current: 0" />
                         <Line endX="100.0" startX="-100.0" />
                         <Label text="Resistor #2 Values:" />
                         <Label text="Resistance" />
-                        <Slider fx:id="rs_R2_slider" min="10.0" value="20.0" />
+                        <Slider fx:id="rs_R2_slider" min="10.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="20.0" />
                         <TextField fx:id="rs_R2_tf" />
                         <Label fx:id="rs_R2_V" text="Voltage: 0" />
                         <Label fx:id="rs_R2_C" text="Current: 0" />
@@ -48,8 +48,8 @@
                         <Line endX="100.0" startX="-100.0" />
                         <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                            <children>
-                              <Button fx:id="rs_calcBtn" mnemonicParsing="false" text="Calculate" />
-                              <Button fx:id="rs_clearBtn" mnemonicParsing="false" text="Clear" />
+                              <Button fx:id="rs_calcBtn" mnemonicParsing="false" onAction="#rsCalcBtnPreesed" text="Calculate" />
+                              <Button fx:id="rs_clearBtn" mnemonicParsing="false" onAction="#rsClearBtnPressed" text="Clear" />
                            </children>
                            <padding>
                               <Insets left="5.0" top="5.0" />
@@ -69,19 +69,19 @@
                         <Label text="Resistors in Parallel" />
                         <Line endX="100.0" startX="-100.0" />
                         <Label text="Battery Voltage:" />
-                        <Slider fx:id="b2_slider" min="10.0" value="20.0" />
+                        <Slider fx:id="b2_slider" min="10.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="20.0" />
                         <TextField fx:id="b2_tf" />
                         <Line endX="100.0" startX="-100.0" />
                         <Label text="Resistor #1 Values:" />
                         <Label text="Resistance:" />
-                        <Slider fx:id="rp_R1_slider" min="10.0" value="20.0" />
+                        <Slider fx:id="rp_R1_slider" min="10.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="20.0" />
                         <TextField fx:id="rp_R1_tf" />
                         <Label fx:id="rp_R1_V" text="Voltage: 0" />
                         <Label fx:id="rp_R1_C" text="Current: 0" />
                         <Line endX="100.0" startX="-100.0" />
                         <Label text="Resistor #2 Values:" />
                         <Label text="Resistance" />
-                        <Slider fx:id="rp_R2_slider" min="10.0" value="20.0" />
+                        <Slider fx:id="rp_R2_slider" min="10.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="20.0" />
                         <TextField fx:id="rp_R2_tf" />
                         <Label fx:id="rp_R2_V" text="Voltage: 0" />
                         <Label fx:id="rp_R2_C" text="Current: 0" />
@@ -91,8 +91,8 @@
                         <Line endX="100.0" startX="-100.0" />
                         <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                            <children>
-                              <Button fx:id="rp_calcBtn" mnemonicParsing="false" text="Calculate" />
-                              <Button fx:id="rp_clearBtn" mnemonicParsing="false" text="Clear" />
+                              <Button fx:id="rp_calcBtn" mnemonicParsing="false" onAction="#rpCalcBtnPressed" text="Calculate" />
+                              <Button fx:id="rp_clearBtn" mnemonicParsing="false" onAction="#rpClearBtnPressed" text="Clear" />
                            </children>
                            <padding>
                               <Insets left="5.0" top="5.0" />
@@ -112,19 +112,19 @@
                         <Label text="Capacitor in Series" />
                         <Line endX="100.0" startX="-100.0" />
                         <Label text="Battery Voltage:" />
-                        <Slider fx:id="b3_slider" min="10.0" value="20.0" />
+                        <Slider fx:id="b3_slider" min="10.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="20.0" />
                         <TextField fx:id="b3_tf" />
                         <Line endX="100.0" startX="-100.0" />
                         <Label text="Capacitor #1 Values:" />
                         <Label text="Capacitance" />
-                        <Slider fx:id="cs_C1_slider" min="10.0" value="20.0" />
+                        <Slider fx:id="cs_C1_slider" min="10.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="20.0" />
                         <TextField fx:id="cs_C1_tf" />
                         <Label fx:id="cs_C1_V" text="Voltage: 0" />
                         <Label fx:id="cs_C1_C" text="Charge: 0" />
                         <Line endX="100.0" startX="-100.0" />
                         <Label text="Capacitor #2 Values:" />
                         <Label text="Capacitance" />
-                        <Slider fx:id="cs_C2_slider" min="10.0" value="20.0" />
+                        <Slider fx:id="cs_C2_slider" min="10.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="20.0" />
                         <TextField fx:id="cs_C2_tf" />
                         <Label fx:id="cs_C2_V" text="Voltage: 0" />
                         <Label fx:id="cs_C2_C" text="Charge: 0" />
@@ -134,8 +134,8 @@
                         <Line endX="100.0" startX="-100.0" />
                         <HBox prefHeight="100.0" prefWidth="200.0" spacing="5.0">
                            <children>
-                              <Button fx:id="cs_calcBtn" mnemonicParsing="false" text="Calculate" />
-                              <Button fx:id="cs_clearBtn" mnemonicParsing="false" text="Clear" />
+                              <Button fx:id="cs_calcBtn" mnemonicParsing="false" onAction="#csCalcBtnPressed" text="Calculate" />
+                              <Button fx:id="cs_clearBtn" mnemonicParsing="false" onAction="#csClearBtnPressed" text="Clear" />
                            </children>
                            <padding>
                               <Insets left="5.0" top="5.0" />
@@ -155,19 +155,19 @@
                         <Label text="Capacitor in Parallel" />
                         <Line endX="100.0" startX="-100.0" />
                         <Label text="Battery Voltage:" />
-                        <Slider fx:id="b4_slider" min="10.0" value="20.0" />
+                        <Slider fx:id="b4_slider" min="10.0" showTickLabels="true" showTickMarks="true" value="20.0" />
                         <TextField fx:id="b4_tf" />
                         <Line endX="100.0" startX="-100.0" />
                         <Label text="Capacitor #1 Values:" />
                         <Label text="Capacitance" />
-                        <Slider fx:id="cp_C1_slider" min="10.0" value="20.0" />
+                        <Slider fx:id="cp_C1_slider" min="10.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="20.0" />
                         <TextField fx:id="cp_C1_tf" />
                         <Label fx:id="cp_C1_V" text="Voltage: 0" />
                         <Label fx:id="cp_C1_C" text="Charge: 0" />
                         <Line endX="100.0" startX="-100.0" />
                         <Label text="Capacitor #2 Values:" />
                         <Label text="Capacitance" />
-                        <Slider fx:id="cp_C2_slider" min="10.0" value="20.0" />
+                        <Slider fx:id="cp_C2_slider" min="10.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="20.0" />
                         <TextField fx:id="cp_C2_tf" />
                         <Label fx:id="cp_C2_V" text="Voltage: 0" />
                         <Label fx:id="cp_C2_C" text="Charge: 0" />
@@ -177,8 +177,8 @@
                         <Line endX="100.0" startX="-100.0" />
                         <HBox prefHeight="100.0" prefWidth="200.0" spacing="5.0">
                            <children>
-                              <Button fx:id="cp_calcBtn" mnemonicParsing="false" text="Calculate" />
-                              <Button fx:id="cp_clearBtn" mnemonicParsing="false" text="Clear" />
+                              <Button fx:id="cp_calcBtn" mnemonicParsing="false" onAction="#cpCalcBtnPressed" text="Calculate" />
+                              <Button fx:id="cp_clearBtn" mnemonicParsing="false" onAction="#cpClearBtnPressed" text="Clear" />
                            </children>
                            <padding>
                               <Insets left="5.0" top="5.0" />
@@ -196,7 +196,7 @@
                <right>
                   <ScrollPane hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0" vbarPolicy="ALWAYS" BorderPane.alignment="CENTER">
                      <content>
-                        <VBox prefHeight="569.0" prefWidth="185.0" spacing="5.0">
+                        <VBox fx:id="rcSidebarVbox" prefHeight="569.0" prefWidth="185.0" spacing="5.0">
                            <children>
                               <Label text="Resistors Custom" />
                               <Line endX="100.0" startX="-100.0" />
@@ -210,25 +210,11 @@
                                     <Insets bottom="5.0" top="5.0" />
                                  </padding>
                               </ComboBox>
-                              <Button fx:id="rc_addBtn" mnemonicParsing="false" prefHeight="24.0" prefWidth="185.0" text="Add">
+                              <Button fx:id="rc_addBtn" mnemonicParsing="false" onAction="#rcAddBtnPressed" prefHeight="24.0" prefWidth="185.0" text="Add">
                                  <padding>
                                     <Insets bottom="5.0" top="5.0" />
                                  </padding>
                               </Button>
-                              <Line endX="100.0" startX="-100.0" />
-                              <Label text="Resistor #1 Values:" />
-                              <Label text="Resistance:" />
-                              <Slider min="10.0" value="20.0" />
-                              <TextField />
-                              <Label text="Voltage: 0" />
-                              <Label text="Current: 0" />
-                              <Line endX="100.0" startX="-100.0" />
-                              <Label text="Resistor #2 Values:" />
-                              <Label text="Resistance" />
-                              <Slider min="10.0" value="20.0" />
-                              <TextField />
-                              <Label text="Voltage: 0" />
-                              <Label text="Current: 0" />
                               <Line endX="100.0" startX="-100.0" />
                               <Label fx:id="rc_TotalCurrent" text="Total Current: 0" />
                               <Label fx:id="rc_EquivResistance" text="Equivalent Resistance: 0" />
@@ -242,6 +228,17 @@
                                     <Insets left="5.0" top="5.0" />
                                  </padding>
                               </HBox>
+                              <VBox fx:id="resistorVbox" prefHeight="138.0" prefWidth="201.0" spacing="5.0" visible="false">
+                                 <children>
+                                    <Line endX="100.0" startX="-100.0" />
+                                    <Label prefHeight="17.0" prefWidth="114.0" text="Resistor #1 Values:" />
+                                    <Label text="Resistance:" />
+                                    <Slider min="10.0" value="20.0" />
+                                    <TextField />
+                                    <Label text="Voltage: 0" />
+                                    <Label text="Current: 0" />
+                                 </children>
+                              </VBox>
                            </children>
                         </VBox>
                      </content>
