@@ -275,7 +275,7 @@ public class ElectricalCircuitSimulationFXMLController implements Initializable 
             new Resistor(Double.parseDouble(rs_R1_tf.getText()), 0, 0),
             new Resistor(Double.parseDouble(rs_R2_tf.getText()), 0, 0),
         };
-        calcResistance(calcCircuit, calcCircuit.length, 0, false, 0);
+        calcResistance(calcCircuit, calcCircuit.length, 0, false, 0, 0);
         rs_R1_V.setText("Voltage: " + calcCircuit[1].getVoltage());
         rs_R1_C.setText("Current: " + ((Resistor)calcCircuit[1]).getCurrent());
         rs_R2_V.setText("Voltage: " + calcCircuit[2].getVoltage());
