@@ -343,9 +343,12 @@ public class ElectricalCircuitSimulationFXMLController implements Initializable 
      * @param circuitSize
      * @param finalResistance 
      */
-    public void calcResistance(CircuitElement[] calcCircuit, int circuitSize, double finalResistance, boolean isSplit, double splitResistance) {
+    public void calcResistance(CircuitElement[] calcCircuit, int circuitSize, double finalResistance, boolean isSplit, double splitResistance, int splitIdx) {
         double store;
-        if (circuitSize == 2) {
+        if (circuitSize == 1) {
+            
+        }
+        else if (circuitSize == 2) {
             store = ((Resistor) calcCircuit[circuitSize - 1]).getResistance();
             ((Resistor)calcCircuit[circuitSize - 1]).setResistance(finalResistance);
             ((Resistor)calcCircuit[1]).setCurrent(calcCircuit[0].getVoltage() / ((Resistor) calcCircuit[1]).getResistance());
@@ -355,22 +358,28 @@ public class ElectricalCircuitSimulationFXMLController implements Initializable 
         //if next circuitElement is a split
         else if (calcCircuit[circuitSize - 1] instanceof CircuitSplit) {
             //if 2nd to next Circuit element is a resistor and if this is 1st split path
-            if (calcCircuit[circuitSize - 2] instanceof Resistor && isSplit == false) {
+            if (calcCircuit[circuitSize - 2] instanceof Resistor & isSplit == false) {
                 store = ((Resistor) calcCircuit[circuitSize - 2]).getResistance();
                 //if 3rd to next element is the end of the 1st split
                 if (calcCircuit[circuitSize - 3] instanceof CircuitSplit) {
                     double equResistor = ((Resistor)calcCircuit[circuitSize - 2]).getResistance();
-                    calcResistance(calcCircuit, circuitSize - 2, finalResistance, true, equResistor);
-                    //((Resistor) calcCircuit[circuitSize - 2]).setVoltage();
+                    calcResistance(calcCircuit, circuitSize - 2, finalResistance, true, equResistor, circuitSize - 1);
+                    ((CircuitSplit) calcCircuit[circuitSize - 3]).setVoltage(calcCircuit[circuitSize - 4].getVoltage());
+                    ((Resistor) calcCircuit[circuitSize - 2]).setVoltage(((CircuitSplit) calcCircuit[circuitSize - 3]).getVoltage());
                 }
                 //if 3rd to next element is a resistor
+                else if (calcCircuit[circuitSize - 3] instanceof Resistor) {
+                    double equResistor = ((Resistor)calcCircuit[circuitSize - 2]).getResistance();
+                    calcResistance(calcCircuit, circuitSize - 2, finalResistance, true, equResistor, circuitSize - 1);
+                    ((Resistor) calcCircuit[circuitSize - 2]).setVoltage(((Resistor)calcCircuit[circuitSize - 3]).getVoltage());
+                }
                 else {
-                    double equResistor = ((Resistor)calcCircuit[circuitSize - 2]).getResistance() + ((Resistor)calcCircuit[circuitSize - 3]).getResistance();
-                    calcResistance(calcCircuit, circuitSize - 1, finalResistance, false, equResistor);
-                    ((Resistor) calcCircuit[circuitSize - 2]).setVoltage(calcCircuit[circuitSize - 3].getVoltage());
+                    finalResistance += splitResistance;
+                    calcResistance(calcCircuit, circuitSize - 1, finalResistance, false, 0, splitIdx);                    
+                    //((Resistor) calcCircuit[circuitSize - 2]).setVoltage(((Battery)calcCircuit[circuitSize - 3]).getVoltage());             
                 }
                 ((Resistor)calcCircuit[circuitSize - 2]).setResistance(store);
-                ((Resistor)calcCircuit[circuitSize - 2]).setCurrent(((Resistor)calcCircuit[circuitSize - 2]).getVoltage() / ((Resistor) calcCircuit[1]).getResistance());
+                ((Resistor)calcCircuit[circuitSize - 2]).setCurrent(((Resistor)calcCircuit[circuitSize - 2]).getVoltage() / ((Resistor) calcCircuit[circuitSize - 2]).getResistance());
                 
                 
             }
@@ -383,42 +392,107 @@ public class ElectricalCircuitSimulationFXMLController implements Initializable 
                     if (splitResistance != 0) {
                         //equiResistor here equals to the 1/Req = 1/R1 + 1/R2
                         double equResistor = Math.pow((1/((Resistor)calcCircuit[circuitSize - 2]).getResistance() + 1/splitResistance), -1);
-                        equResistor += finalResistance;
-                        calcResistance(calcCircuit, circuitSize - 2, equResistor, false, 0);
-                    }
-                    //make sure this gets the voltage from the right circuit element
-                    if (calcCircuit[circuitSize - 4] instanceof Resistor) {
-                        ((Resistor)calcCircuit[circuitSize - 2]).setVoltage(((Resistor)calcCircuit[circuitSize - 4]).getVoltage());
+                        finalResistance += equResistor;
+                        //if the component after the circuit split is a resistor
+                        if (calcCircuit[circuitSize - 4] instanceof Resistor) {
+                            finalResistance += ((Resistor) calcCircuit[circuitSize - 4]).getResistance();
+                            calcResistance(calcCircuit, circuitSize - 3, finalResistance, false, 0, 0);
+                            ((CircuitSplit) calcCircuit[splitIdx]).setTotal(equResistor);
+                            ((CircuitSplit) calcCircuit[splitIdx]).setVoltage(((Resistor)calcCircuit[circuitSize - 4]).getCurrent() * equResistor);
+                            ((Resistor) calcCircuit[circuitSize - 2]).setVoltage(((Resistor)calcCircuit[circuitSize - 4]).getCurrent() * equResistor);
+                        }
+                        //if the componenent after the circuit split is another circuit split
+                        else if (calcCircuit[circuitSize - 4] instanceof CircuitSplit) {
+                            calcResistance(calcCircuit, circuitSize - 3, finalResistance, false, 0, 0);
+                            ((CircuitSplit) calcCircuit[splitIdx]).setTotal(equResistor);
+                            ((CircuitSplit) calcCircuit[splitIdx]).setVoltage(((CircuitSplit)calcCircuit[circuitSize - 4]).getVoltage() / ((CircuitSplit)calcCircuit[circuitSize - 4]).getTotal() * equResistor);
+                            ((Resistor) calcCircuit[circuitSize - 2]).setVoltage(((CircuitSplit)calcCircuit[circuitSize - 4]).getVoltage());
+                        }
+                        //if the component after the circuit split is the battery
+                        else {
+                            ((CircuitSplit) calcCircuit[splitIdx]).setTotal(equResistor);
+                            ((CircuitSplit) calcCircuit[splitIdx]).setVoltage(calcCircuit[circuitSize - 4].getVoltage() / finalResistance * equResistor);
+                            ((Resistor) calcCircuit[circuitSize - 2]).setVoltage(((CircuitSplit)calcCircuit[splitIdx]).getVoltage());
+                        }
+                        
                     }
                 }
                 //if 3rd to next element is a resistor
+                //else if (calcCircuit[circuitSize - 3] instanceof Resistor) 
                 else {
                     double equResistor = ((Resistor)calcCircuit[circuitSize - 2]).getResistance() + ((Resistor)calcCircuit[circuitSize - 3]).getResistance();
-                    calcResistance(calcCircuit, circuitSize - 1, finalResistance, false, equResistor);
+                    calcResistance(calcCircuit, circuitSize - 2, finalResistance, false, equResistor, splitIdx);
                 }
                 ((Resistor)calcCircuit[circuitSize - 2]).setResistance(store);
+                ((Resistor) calcCircuit[circuitSize - 2]).setCurrent(((Resistor) calcCircuit[circuitSize - 2]).getVoltage() / ((Resistor) calcCircuit[circuitSize - 2]).getResistance());
             }
             //case for if a circuit's split has no resistors
             else {
-                
+                calcResistance(calcCircuit, circuitSize - 2, finalResistance, false, 0, 0);
+                if (calcCircuit[circuitSize - 3] instanceof CircuitSplit) { 
+                    ((CircuitSplit) calcCircuit[splitIdx]).setTotal(((CircuitSplit)calcCircuit[circuitSize - 3]).getTotal());
+                }
+                else if (calcCircuit[circuitSize - 3] instanceof Resistor){ 
+                    ((CircuitSplit) calcCircuit[splitIdx]).setTotal(((Resistor)calcCircuit[circuitSize - 3]).getResistance());
+                }
+                ((CircuitSplit) calcCircuit[splitIdx]).setVoltage(calcCircuit[circuitSize - 3].getVoltage());    
             }
         }
         //if the next element is a resistor
         else {
+            store = ((Resistor) calcCircuit[circuitSize - 1]).getResistance();
+            if (circuitSize == calcCircuit.length) finalResistance = store;
+            ((Resistor)calcCircuit[circuitSize - 1]).setResistance(finalResistance);
+            //if resistor is part of a circuit split
+            if (splitResistance != 0) {
+                ((Resistor)calcCircuit[circuitSize - 1]).setResistance(splitResistance);
+                if(calcCircuit[circuitSize - 2] instanceof Resistor) {
+                    splitResistance += ((Resistor)calcCircuit[circuitSize - 2]).getResistance();
+                    calcResistance(calcCircuit, circuitSize - 1, finalResistance, isSplit, splitResistance, splitIdx);                
+                    ((Resistor)calcCircuit[circuitSize - 1]).setCurrent(((Resistor)calcCircuit[circuitSize - 2]).getCurrent());
+                    ((Resistor)calcCircuit[circuitSize - 1]).setResistance(store);
+                    ((Resistor)calcCircuit[circuitSize - 1]).setVoltage(((Resistor)calcCircuit[circuitSize - 1]).getCurrent() * ((Resistor) calcCircuit[circuitSize - 1]).getResistance());
+                }
+                else {
+                    double equResistor = Math.pow((1/((Resistor)calcCircuit[circuitSize - 1]).getResistance() + 1/splitResistance), -1);
+                        finalResistance += equResistor;
+                        //if the component after the circuit split is a resistor
+                        if (calcCircuit[circuitSize - 3] instanceof Resistor) {
+                            finalResistance += ((Resistor) calcCircuit[circuitSize - 3]).getResistance();
+                            calcResistance(calcCircuit, circuitSize - 1, finalResistance, false, 0, splitIdx);
+                            ((CircuitSplit) calcCircuit[splitIdx]).setTotal(equResistor);
+                            ((CircuitSplit) calcCircuit[splitIdx]).setVoltage(((Resistor)calcCircuit[circuitSize - 3]).getCurrent() * equResistor);
+                            ((Resistor) calcCircuit[circuitSize - 1]).setVoltage(((Resistor)calcCircuit[circuitSize - 3]).getCurrent() * equResistor);
+                        }
+                        //if the componenent after the circuit split is another circuit split
+                        else if (calcCircuit[circuitSize - 3] instanceof CircuitSplit) {
+                            calcResistance(calcCircuit, circuitSize - 2, finalResistance, false, 0, splitIdx);
+                            ((CircuitSplit) calcCircuit[splitIdx]).setTotal(equResistor);
+                            ((CircuitSplit) calcCircuit[splitIdx]).setVoltage(((CircuitSplit)calcCircuit[circuitSize - 3]).getVoltage() / ((CircuitSplit)calcCircuit[circuitSize - 3]).getTotal() * equResistor);
+                            ((Resistor) calcCircuit[circuitSize - 1]).setVoltage(((CircuitSplit)calcCircuit[circuitSize - 3]).getVoltage());
+                        }
+                        //if the component after the circuit split is the battery
+                        else {
+                            ((CircuitSplit) calcCircuit[splitIdx]).setTotal(equResistor);
+                            ((CircuitSplit) calcCircuit[splitIdx]).setVoltage(calcCircuit[circuitSize - 3].getVoltage() / finalResistance * equResistor);
+                            ((Resistor) calcCircuit[circuitSize - 1]).setVoltage(((CircuitSplit)calcCircuit[splitIdx]).getVoltage());
+                        }
+                }
+            }
             //if the 2nd to next element is a resistor
-            if (calcCircuit[circuitSize - 2] instanceof Resistor) {
-                store = ((Resistor) calcCircuit[circuitSize - 1]).getResistance();
-                if (circuitSize == calcCircuit.length) finalResistance = store;
-                ((Resistor)calcCircuit[circuitSize - 1]).setResistance(finalResistance);
+            else if (calcCircuit[circuitSize - 2] instanceof Resistor) {
                 double equResistor = ((Resistor)calcCircuit[circuitSize - 1]).getResistance() + ((Resistor)calcCircuit[circuitSize - 2]).getResistance();
-                calcResistance(calcCircuit, circuitSize - 1, equResistor, isSplit, splitResistance);
+                calcResistance(calcCircuit, circuitSize - 1, equResistor, isSplit, splitResistance, splitIdx);
                 ((Resistor)calcCircuit[circuitSize - 1]).setCurrent(((Resistor)calcCircuit[circuitSize - 2]).getCurrent());
                 ((Resistor)calcCircuit[circuitSize - 1]).setResistance(store);
                 ((Resistor)calcCircuit[circuitSize - 1]).setVoltage(((Resistor)calcCircuit[circuitSize - 1]).getCurrent() * ((Resistor) calcCircuit[circuitSize - 1]).getResistance());
             }
             //if the 2nd to next element is a circuitSplit
             else {
-                
+                calcResistance(calcCircuit, circuitSize - 1, finalResistance, isSplit, splitResistance, splitIdx);
+                ((Resistor)calcCircuit[circuitSize - 1]).setCurrent(((CircuitSplit)calcCircuit[circuitSize - 2]).getVoltage() / ((CircuitSplit)calcCircuit[circuitSize - 2]).getTotal());
+                ((Resistor)calcCircuit[circuitSize - 1]).setResistance(store);
+                ((Resistor)calcCircuit[circuitSize - 1]).setVoltage(((Resistor)calcCircuit[circuitSize - 1]).getCurrent() * ((Resistor) calcCircuit[circuitSize - 1]).getResistance());
             }
         }
     }   

@@ -9,9 +9,25 @@ package Model;
  * @author 6237800
  */
 public class CircuitSplit extends CircuitElement {
+    double total;
     
-    public CircuitSplit(double voltage) {
+    public CircuitSplit(double voltage, double total) {
         super(voltage);
+        this.total = total;
     }
+    
+    public void copy(CircuitSplit cs) {
+        this.setVoltage(cs.getVoltage());
+        this.setTotal(cs.getTotal());
+    }
+
+    public double getTotal() {
+        return total;
+    }
+
+    public void setTotal(double total) {
+        this.total = total;
+    }
+    
     
 }
