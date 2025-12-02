@@ -5,12 +5,12 @@
 package Controller;
 
 import Model.Battery;
+import Model.Capacitor;
 import Model.CircuitElement;
 import Model.CircuitSplit;
 import Model.Resistor;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -22,10 +22,9 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
-import javafx.scene.input.DragEvent;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseDragEvent;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Line;
 
@@ -185,23 +184,65 @@ public class ElectricalCircuitSimulationFXMLController implements Initializable 
     private VBox capacitorvb;
     @FXML
     private VBox ccSidebarVbox;
+    @FXML
+    private Pane rc_pane;
+    @FXML
+    private Pane cc_pane;
+    
+    private ImageView battery;
+    private ImageView battery2;
+    private ImageView capacitor;
+    private ImageView circuitSplit;
+    private ImageView circuitSplitEnd;
+    private ImageView corner1_series;
+    private ImageView corner1_parallel;
+    private ImageView corner2_series;
+    private ImageView corner2_parallel;
+    private ImageView resistor;
+    private ImageView wire;
+    private boolean split_circuit1;
+    private boolean split_circuit2;
+    private int btnCount;
+    private int btnCount2;
+    private CircuitElement[] calcCircuitcustom1;
+    private CircuitElement[] calcCircuitcustom2;
+    
+
     
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        split_circuit1 = false;
+        split_circuit2 = false;
+        btnCount = 0;
         counter1 = 0;
         counter2 = 0;
         cc_comboBox.getItems().addAll(
-        "Branch","Capacitor"
+        "Branch","Capacitor", "Wire"
     );
         rc_comboBox.getItems().addAll(
-        "Branch","Resistor"
+        "Branch","Resistor", "Wire"
     );
         cc_comboBox.setValue("Branch");
         rc_comboBox.setValue("Branch");
+        battery = new ImageView("file:src/View/Images/Battery.png");
+        battery2 = new ImageView("file:src/View/Images/Battery.png");
+        capacitor = new ImageView("file:src/View/Images/Capacitor.png");
+        circuitSplit = new ImageView("file:src/View/Images/CircuitSplit.png");
+        circuitSplitEnd = new ImageView("file:src/View/Images/CircuitSplitEnd.png");
+        corner1_series = new ImageView("file:src/View/Images/Corner1 Series.png");
+        corner1_parallel = new ImageView("file:src/View/Images/Corner1 parallel.png");
+        corner2_series = new ImageView("file:src/View/Images/Corner2 Series.png");
+        corner2_parallel = new ImageView("file:src/View/Images/Corner2 parallel.png");
+        resistor = new ImageView("file:src/View/Images/Resistor.png");
+        wire = new ImageView("file:src/View/Images/Wire.png");
         
+        rc_pane.getChildren().add(battery2);
+        cc_pane.getChildren().add(battery);
+        calcCircuitcustom1 = new CircuitElement[20];
+        calcCircuitcustom2 = new CircuitElement[20];
         
         bindSliderToTextField(b1_slider, b1_tf);
         bindSliderToTextField(rs_R1_slider, rs_R1_tf);
@@ -220,6 +261,7 @@ public class ElectricalCircuitSimulationFXMLController implements Initializable 
         bindSliderToTextField(cp_C2_slider, cp_C2_tf);
         
         bindSliderToTextField(b5_slider, b5_tf);
+        bindSliderToTextField(b6_slider, b6_tf);
     }
 
     /**
@@ -291,10 +333,12 @@ public class ElectricalCircuitSimulationFXMLController implements Initializable 
     private void rpCalcBtnPressed(ActionEvent event) {
         CircuitElement[] calcCircuit = {
             new Battery(Double.parseDouble(b2_tf.getText())),
+            new CircuitSplit(0,0),
             new Resistor(Double.parseDouble(rp_R1_tf.getText()), 0, 0),
             new Resistor(Double.parseDouble(rp_R2_tf.getText()), 0, 0),
+            new CircuitSplit(0,0),
         };
-        //calcResistance(calcCircuit, calcCircuit.length, 0, false, 0);
+        calcResistance(calcCircuit, calcCircuit.length, 0, false, 0, 0);
         rp_R1_V.setText("Voltage: " + calcCircuit[1].getVoltage());
         rp_R1_C.setText("Current: " + ((Resistor)calcCircuit[1]).getCurrent());
         rp_R2_V.setText("Voltage: " + calcCircuit[2].getVoltage());
@@ -311,14 +355,14 @@ public class ElectricalCircuitSimulationFXMLController implements Initializable 
     private void cpCalcBtnPressed(ActionEvent event) {
         CircuitElement[] calcCircuit = {
             new Battery(Double.parseDouble(b3_tf.getText())),
-            new Resistor(Double.parseDouble(cs_C1_tf.getText()), 0, 0),
-            new Resistor(Double.parseDouble(cs_C2_tf.getText()), 0, 0),
+            new Capacitor(Double.parseDouble(cs_C1_tf.getText()), 0, 0),
+            new Capacitor(Double.parseDouble(cs_C2_tf.getText()), 0, 0),
         };
-        //calcResistance(calcCircuit, calcCircuit.length, 0, false, 0);
-        //cs_C1_V.setText("Voltage: " + calcCircuit[1].getVoltage());
-        //cs_C1_C.setText("Charge: " + ((Capacitor)calcCircuit[1]).getCurrent());
-        //cs_C2_V.setText("Voltage: " + calcCircuit[2].getVoltage());
-        //cs_C2_C.setText("Charge: " + ((Resistor)calcCircuit[2]).getCurrent());
+        calcCapacitance(calcCircuit, calcCircuit.length, 0, false, 0);
+        cs_C1_V.setText("Voltage: " + calcCircuit[1].getVoltage());
+        cs_C1_C.setText("Charge: " + ((Capacitor)calcCircuit[1]).getCurrent());
+        cs_C2_V.setText("Voltage: " + calcCircuit[2].getVoltage());
+        cs_C2_C.setText("Charge: " + ((Capacitor)calcCircuit[2]).getCurrent());
         
     
     }
@@ -331,14 +375,16 @@ public class ElectricalCircuitSimulationFXMLController implements Initializable 
     private void csCalcBtnPressed(ActionEvent event) {
         CircuitElement[] calcCircuit = {
             new Battery(Double.parseDouble(b4_tf.getText())),
-            new Resistor(Double.parseDouble(cp_C1_tf.getText()), 0, 0),
-            new Resistor(Double.parseDouble(cp_C2_tf.getText()), 0, 0),
+            new CircuitSplit(0,0),
+            new Capacitor(Double.parseDouble(cp_C1_tf.getText()), 0, 0),
+            new Capacitor(Double.parseDouble(cp_C2_tf.getText()), 0, 0),
+            new CircuitSplit(0,0),
         };
-        //calcResistance(calcCircuit, calcCircuit.length, 0, false, 0);
-        //cp_C1_V.setText("Voltage: " + calcCircuit[1].getVoltage());
-        //cp_C1_C.setText("Charge: " + ((Resistor)calcCircuit[1]).getCurrent());
-        //cp_C2_V.setText("Voltage: " + calcCircuit[2].getVoltage());
-        //cp_C2_C.setText("Charge: " + ((Resistor)calcCircuit[2]).getCurrent());
+        calcCapacitance(calcCircuit, calcCircuit.length, 0, false, 0);
+        cp_C1_V.setText("Voltage: " + calcCircuit[1].getVoltage());
+        cp_C1_C.setText("Charge: " + ((Capacitor)calcCircuit[1]).getCharge());
+        cp_C2_V.setText("Voltage: " + calcCircuit[2].getVoltage());
+        cp_C2_C.setText("Charge: " + ((Capacitor)calcCircuit[2]).getCharge());
         
     }
     
@@ -394,9 +440,12 @@ public class ElectricalCircuitSimulationFXMLController implements Initializable 
      * @param event 
      */
     @FXML
-    private void rcAddBtnPressed(ActionEvent event) {
+   private void rcAddBtnPressed(ActionEvent event) {
+        if (btnCount < 5) {
+        calcCircuitcustom1[counter1] = new Battery(Double.parseDouble(b5_tf.getText()));
         
-    if(rc_comboBox.getSelectionModel().getSelectedItem().equals("Resistor")) {
+        if(rc_comboBox.getSelectionModel().getSelectedItem().equals("Resistor")) {
+        if (!split_circuit1) {
     VBox copy = new VBox();
     copy.setSpacing(resistorVbox.getSpacing());
     copy.setAlignment(resistorVbox.getAlignment());
@@ -406,11 +455,11 @@ public class ElectricalCircuitSimulationFXMLController implements Initializable 
 
         
             if (n instanceof Label originalLabel) {
-            if (originalLabel.getText().equals("Resistor #"+ counter1 + " Values:")) {
+            if (originalLabel.getText().equals("Resistor #"+ counter1 + " Values:")||originalLabel.getText().equals("Resistor #"+ counter1 + 1 + " Values:")||originalLabel.getText().equals("Resistor #0 Values:")) {
                 originalLabel.setText("Resistor #" + (counter1 + 1) +" Values:");
             }
             Label lbl = new Label(originalLabel.getText());
-            lbl.setFont(originalLabel.getFont());
+             lbl.setFont(originalLabel.getFont());
             lbl.setTextFill(originalLabel.getTextFill());
             lbl.setStyle(originalLabel.getStyle());
             copy.getChildren().add(lbl);
@@ -449,125 +498,1454 @@ public class ElectricalCircuitSimulationFXMLController implements Initializable 
     rcvbs.add(counter1,copy);
 
     counter1++;
-    }
+    btnCount++;
+    ImageView newResistor = new ImageView("file:src/View/Images/Resistor.png");
+    ImageView newwire1 = new ImageView("file:src/View/Images/Wire.png");
+    ImageView newwire2 = new ImageView("file:src/View/Images/Wire.png");
+    ImageView newcorner1 = new ImageView("file:src/View/Images/Corner1 Series.png");
+    ImageView newcorner2 = new ImageView("file:src/View/Images/Corner2 Series.png");
+    if (btnCount == 1) {
+        
+    newResistor.setLayoutX( 150 );  
+    newResistor.setLayoutY( -5 ); 
+    
+    rc_pane.getChildren().addAll(newResistor);
+    calcCircuitcustom1[counter1] = new Resistor(Double.parseDouble(((TextField)rcvbs.get(counter1-1).getChildren().get(2)).getText()), 0, 0);
     }
     
+    else if (btnCount == 2) {
+        newResistor.setLayoutX( 350 );  
+    newResistor.setLayoutY( -5 );  
+    newcorner1.setLayoutX( 550 );  
+    newwire1.setLayoutX( 450 ); 
+    newwire1.setLayoutY( -5 );
+    newwire2.setLayoutX(250);
+    newwire2.setLayoutY(-5);
+    newcorner1.setLayoutY( 20);
+    rc_pane.getChildren().addAll(newResistor, newwire1,newwire2, newcorner1);
+    calcCircuitcustom1[counter1] = new Resistor(Double.parseDouble(((TextField)rcvbs.get(counter1-1).getChildren().get(2)).getText()), 0, 0);
+
+    
+    }
+    else if (btnCount == 3) {
+        newResistor.setRotate(90);
+        newwire1.setRotate(90);
+        newwire2.setRotate(90);
+        newwire1.setLayoutX(525);
+        newwire1.setLayoutY(70);
+        newResistor.setLayoutX( 525 );  
+        newResistor.setLayoutY( 170 );
+        newwire2.setLayoutX(525);
+        newwire2.setLayoutY(270);
+        newcorner2.setLayoutX(552);
+        newcorner2.setLayoutY(370);
+        rc_pane.getChildren().addAll(newResistor, newwire1, newwire2, newcorner2);
+        calcCircuitcustom1[counter1] = new Resistor(Double.parseDouble(((TextField)rcvbs.get(counter1-1).getChildren().get(2)).getText()), 0, 0);
+
+        
+        
+    }else if (btnCount == 4) {
+        newResistor.setLayoutX(352);
+        newResistor.setLayoutY(405);
+        newwire1.setLayoutX(451);
+        newwire1.setLayoutY(405);
+        rc_pane.getChildren().addAll(newResistor, newwire1);
+        rc_comboBox.getItems().remove(0);
+        calcCircuitcustom1[counter1] = new Resistor(Double.parseDouble(((TextField)rcvbs.get(counter1-1).getChildren().get(2)).getText()), 0, 0);
+
+        
+        
+    }
+    else if (btnCount == 5) {
+        newResistor.setLayoutX(150);
+        newResistor.setLayoutY(405);
+        newwire1.setLayoutX(251);
+        newwire1.setLayoutY(405);
+        rc_pane.getChildren().addAll(newResistor, newwire1);
+        calcCircuitcustom1[counter1] = new Resistor(Double.parseDouble(((TextField)rcvbs.get(counter1-1).getChildren().get(2)).getText()), 0, 0);
+
+    }
+    }
+        else {
+            VBox copy1 = new VBox();
+    VBox copy2 = new VBox();
+
+    copy1.setSpacing(resistorVbox.getSpacing());
+    copy1.setAlignment(resistorVbox.getAlignment());
+    copy2.setSpacing(resistorVbox.getSpacing());
+    copy2.setAlignment(resistorVbox.getAlignment());
+
+    int number1 = counter1 + 1;
+    int number2 = counter1 + 2;
+
+    Label lbl1 = new Label("Resistor #" + number1 + " Values:");
+    Label lbl2 = new Label("Resistor #" + number2 + " Values:");
+
+    lbl1.setFont(((Label) resistorVbox.getChildren().get(0)).getFont());
+    lbl2.setFont(((Label) resistorVbox.getChildren().get(0)).getFont());
+
+    copy1.getChildren().add(lbl1);
+    copy2.getChildren().add(lbl2);
+
+    for (Node n : resistorVbox.getChildren()) {
+
+        if (n instanceof Label original && !original.getText().startsWith("Resistor #")) {
+            Label clone1 = new Label(original.getText());
+            Label clone2 = new Label(original.getText());
+
+            clone1.setFont(original.getFont());
+            clone1.setStyle(original.getStyle());
+            clone1.setTextFill(original.getTextFill());
+
+            clone2.setFont(original.getFont());
+            clone2.setStyle(original.getStyle());
+            clone2.setTextFill(original.getTextFill());
+
+            copy1.getChildren().add(clone1);
+            copy2.getChildren().add(clone2);
+        }
+
+        else if (n instanceof TextField originalTF) {
+
+            TextField tf1 = new TextField("10.00");
+            TextField tf2 = new TextField("10.00");
+
+            tf1.setPromptText(originalTF.getPromptText());
+            tf1.setPrefWidth(originalTF.getPrefWidth());
+             tf1.setStyle(originalTF.getStyle());
+
+            tf2.setPromptText(originalTF.getPromptText());
+            tf2.setPrefWidth(originalTF.getPrefWidth());
+            tf2.setStyle(originalTF.getStyle());
+
+            copy1.getChildren().add(tf1);
+            copy2.getChildren().add(tf2);
+        }
+
+        else if (n instanceof Line originalLine) {
+
+            Line l1 = new Line(originalLine.getStartX(), originalLine.getStartY(),
+                               originalLine.getEndX(), originalLine.getEndY());
+            Line l2 = new Line(originalLine.getStartX(), originalLine.getStartY(),
+                               originalLine.getEndX(), originalLine.getEndY());
+
+            l1.setStroke(originalLine.getStroke());
+             l1.setStrokeWidth(originalLine.getStrokeWidth());
+            l1.setStyle(originalLine.getStyle());
+
+            l2.setStroke(originalLine.getStroke());
+            l2.setStrokeWidth(originalLine.getStrokeWidth());
+            l2.setStyle(originalLine.getStyle());
+
+            copy1.getChildren().add(l1);
+            copy2.getChildren().add(l2);
+        }
+    }
+
+    rcSidebarVbox.getChildren().add(10 + counter1, copy1);
+    rcSidebarVbox.getChildren().add(10 + counter1 + 1, copy2);
+
+    rcvbs.add(copy1);
+    rcvbs.add(copy2);
+    btnCount++;
+    counter1 += 2;
+    ImageView newResistor = new ImageView("file:src/View/Images/Resistor.png");
+    ImageView newResistor2 = new ImageView("file:src/View/Images/Resistor.png");
+    ImageView newcornerp1 = new ImageView("file:src/View/Images/Corner1 parallel.png");
+    ImageView newwire1 = new ImageView("file:src/View/Images/Wire.png");
+    ImageView newcornerp2 = new ImageView("file:src/View/Images/Corner1 Series.png");
+    ImageView newwire2 = new ImageView("file:src/View/Images/Wire.png");
+    
+    ImageView newwire3 = new ImageView("file:src/View/Images/Wire.png");
+    ImageView newwire4 = new ImageView("file:src/View/Images/Wire.png");
+    ImageView newwire5 = new ImageView("file:src/View/Images/Wire.png");
+    ImageView newcircuitend = new ImageView("file:src/View/Images/CircuitSplitEnd.png");
+    if (btnCount == 2) {
+    
+    newwire3.setLayoutX(300);
+    newwire3.setLayoutY( -33);
+    newwire4.setLayoutX(300);
+    newwire4.setLayoutY( 25);
+    newResistor.setLayoutX( 375 );  
+    newResistor.setLayoutY( -33); 
+    
+    newResistor2.setLayoutX( 375 );  
+    newResistor2.setLayoutY( 25); 
+    
+    newcornerp1.setLayoutX(475);
+    newcornerp1.setLayoutY(70);
+    
+    newwire1.setLayoutX(475);
+    newwire1.setLayoutY(-33);
+    
+    newcornerp2.setLayoutX(565);
+    newcornerp2.setLayoutY(-8);
+    
+    newwire2.setLayoutX(540);
+    newwire2.setLayoutY(28); 
+    newwire2.setRotate(90);
+    rc_pane.getChildren().addAll(newResistor, newResistor2, newcornerp1, newwire1, newcornerp2, newwire2, newwire3, newwire4 );
+    calcCircuitcustom1[counter1] = new CircuitSplit(0,0);
+      
+    
+    calcCircuitcustom1[counter1 + 1] = new Resistor(Double.parseDouble(((TextField)rcvbs.get(counter1-1).getChildren().get(2)).getText()), 0, 0);
+ 
+    calcCircuitcustom1[counter1 + 2] = new Resistor(Double.parseDouble(((TextField)rcvbs.get(counter1-1).getChildren().get(2)).getText()), 0, 0);
+
+    }
+    else if (btnCount == 3) {
+        newwire1.setRotate(90);
+        newwire2.setRotate(90);
+        newwire3.setRotate(90);
+        newwire4.setRotate(90);
+        newResistor.setRotate(90);
+        newResistor2.setRotate(90);
+        newcornerp1.setRotate(90);
+        newcornerp2.setRotate(90);
+        newwire1.setLayoutX(475);
+        newwire1.setLayoutY(125);
+        newwire2.setLayoutX(543);
+        newwire2.setLayoutY(125);
+        newResistor.setLayoutX(475);
+        newResistor.setLayoutY(225);
+        newResistor2.setLayoutX(543);
+        newResistor2.setLayoutY(225);
+        newwire4.setLayoutX(475);
+        newwire4.setLayoutY(300);
+        newwire3.setLayoutX(543);
+        newwire3.setLayoutY(325);
+        newcornerp1.setLayoutX(540);
+        newcornerp1.setLayoutY(425);
+        newcornerp2.setLayoutX(500);
+        newcornerp2.setLayoutY(393);
+        newwire5.setLayoutX(470);
+        newwire5.setLayoutY(428);
+       
+        calcCircuitcustom1[counter1] = new CircuitSplit(0,0);
+      
+    
+       calcCircuitcustom1[counter1 + 1] = new Resistor(Double.parseDouble(((TextField)rcvbs.get(counter1-1).getChildren().get(2)).getText()), 0, 0);
+ 
+       calcCircuitcustom1[counter1 + 2] = new Resistor(Double.parseDouble(((TextField)rcvbs.get(counter1-1).getChildren().get(2)).getText()), 0, 0);
+
+        rc_pane.getChildren().addAll(newwire1, newwire2, newResistor, newResistor2,  newwire3, newwire4, newcornerp1, newcornerp2, newwire5);
+    }
+    else if (btnCount == 4) {
+        newResistor.setLayoutX(390);
+        newResistor.setLayoutY(428);
+        newResistor2.setLayoutX(390);
+        newResistor2.setLayoutY(365);
+        newwire1.setLayoutX(310);
+        newwire1.setLayoutY(428);
+        newwire2.setLayoutX(310);
+        newwire2.setLayoutY(365);
+        calcCircuitcustom1[counter1] = new CircuitSplit(0,0);
+      
+    
+    calcCircuitcustom1[counter1 + 1] = new Resistor(Double.parseDouble(((TextField)rcvbs.get(counter1-1).getChildren().get(2)).getText()), 0, 0);
+ 
+    calcCircuitcustom1[counter1 + 2] = new Resistor(Double.parseDouble(((TextField)rcvbs.get(counter1-1).getChildren().get(2)).getText()), 0, 0);
+
+        rc_pane.getChildren().addAll(newResistor, newResistor2, newwire1,newwire2);
+    }
+    else if (btnCount == 5) {
+        newResistor.setLayoutX(210);
+        newResistor.setLayoutY(428);
+        newResistor2.setLayoutX(210);
+        newResistor2.setLayoutY(365);
+        newcircuitend.setRotate(180);
+        newcircuitend.setLayoutX(110);
+        newcircuitend.setLayoutY(397);
+        calcCircuitcustom1[counter1] = new CircuitSplit(0,0);
+      
+    
+    calcCircuitcustom1[counter1 + 1] = new Resistor(Double.parseDouble(((TextField)rcvbs.get(counter1-1).getChildren().get(2)).getText()), 0, 0);
+ 
+    calcCircuitcustom1[counter1 + 2] = new Resistor(Double.parseDouble(((TextField)rcvbs.get(counter1-1).getChildren().get(2)).getText()), 0, 0);
+
+        rc_pane.getChildren().addAll(newResistor, newResistor2, newcircuitend);
+        
+    }
+        }
+    }
+    else if (rc_comboBox.getSelectionModel().getSelectedItem().equals("End branch")) {
+        ImageView newCircuitend = new ImageView("file:src/View/Images/CircuitSplitEnd.png");
+        ImageView newwire = new ImageView("file:src/View/Images/Wire.png");
+        ImageView newwire2 = new ImageView("file:src/View/Images/Wire.png");
+        ImageView newwire3 = new ImageView("file:src/View/Images/Wire.png");
+        ImageView newcorner = new ImageView("file:src/View/Images/Corner1 Series.png");
+        btnCount++;
+        split_circuit1 = false;
+        rc_comboBox.getItems().remove(0);
+        rc_comboBox.getItems().add(0, "Branch");
+        rc_comboBox.setValue("Resistor");
+        
+        if (btnCount == 2) {
+            newwire2.setLayoutX(300);
+            newwire2.setLayoutY(-33);
+            newwire3.setLayoutX(300);
+            newwire3.setLayoutY(25);
+            newCircuitend.setLayoutX(375);
+            newCircuitend.setLayoutY(-5);
+            newwire.setLayoutX(450);
+            newwire.setLayoutY(-5);
+            newcorner.setLayoutX(550);
+            newcorner.setLayoutY(20);
+            rc_pane.getChildren().addAll(newCircuitend, newwire, newcorner, newwire2, newwire3);
+            calcCircuitcustom1[counter1] = new CircuitSplit(0,0);
+            
+        }
+        else if (btnCount == 3) {
+            newCircuitend.setRotate(90);
+            newwire.setRotate(90);
+            newwire2.setRotate(90);
+            newcorner.setRotate(90);
+            newCircuitend.setLayoutX(510);
+            newCircuitend.setLayoutY(125);
+            newwire.setLayoutX(510);
+            newwire.setLayoutY(225);
+            newwire2.setLayoutX(510);
+            newwire2.setLayoutY(325);
+            newcorner.setLayoutX(535);
+            newcorner.setLayoutY(425);
+            rc_pane.getChildren().addAll(newCircuitend, newwire, newwire2, newcorner);
+            calcCircuitcustom1[counter1] = new CircuitSplit(0,0);
+        }
+        else if (btnCount == 4) {
+            newCircuitend.setRotate(180);
+            newCircuitend.setLayoutX(390);
+            newCircuitend.setLayoutY(395);
+            newwire.setLayoutX(295);
+            newwire.setLayoutY(400);
+            rc_pane.getChildren().addAll(newCircuitend, newwire);
+            calcCircuitcustom1[counter1] = new CircuitSplit(0,0);
+            rc_comboBox.getItems().remove(0);
+        }
+        else if (btnCount == 5) {
+            newCircuitend.setRotate(180);
+            newCircuitend.setLayoutX(250);
+            newCircuitend.setLayoutY(398);
+            
+            newwire2.setLayoutX(150);
+            newwire2.setLayoutY(402);
+            rc_pane.getChildren().addAll(newCircuitend, newwire2);
+            calcCircuitcustom1[counter1] = new CircuitSplit(0,0);
+        }
+    
+        
+    }
+    else if (rc_comboBox.getSelectionModel().getSelectedItem().equals("Wire")) {
+        if (!split_circuit1) {
+            btnCount++;
+    ImageView newwire = new ImageView("file:src/View/Images/Wire.png");
+    ImageView newwire1 = new ImageView("file:src/View/Images/Wire.png");
+    ImageView newwire2 = new ImageView("file:src/View/Images/Wire.png");
+    ImageView newcorner1 = new ImageView("file:src/View/Images/Corner1 Series.png");
+    ImageView newcorner2 = new ImageView("file:src/View/Images/Corner2 Series.png");
+    if (btnCount == 1) {
+        
+    newwire.setLayoutX( 150 );  
+    newwire.setLayoutY( -5 ); 
+    
+    rc_pane.getChildren().addAll(newwire);
+    }
+    
+    else if (btnCount == 2) {
+        newwire.setLayoutX( 350 );  
+    newwire.setLayoutY( -5 );  
+    newcorner1.setLayoutX( 550 );  
+    newwire1.setLayoutX( 450 ); 
+    newwire1.setLayoutY( -5 );
+    newwire2.setLayoutX(250);
+    newwire2.setLayoutY(-5);
+    newcorner1.setLayoutY( 20);
+    rc_pane.getChildren().addAll(newwire, newwire1,newwire2, newcorner1);
+    
+    }
+    else if (btnCount == 3) {
+        newwire.setRotate(90);
+        newwire1.setRotate(90);
+        newwire2.setRotate(90);
+        newwire1.setLayoutX(525);
+        newwire1.setLayoutY(70);
+        newwire.setLayoutX( 525 );  
+        newwire.setLayoutY( 170 );
+        newwire2.setLayoutX(525);
+        newwire2.setLayoutY(270);
+        newcorner2.setLayoutX(552);
+        newcorner2.setLayoutY(370);
+        rc_pane.getChildren().addAll(newwire, newwire1, newwire2, newcorner2);
+        
+        
+        
+    }else if (btnCount == 4) {
+        newwire.setLayoutX(352);
+        newwire.setLayoutY(405);
+        newwire1.setLayoutX(451);
+        newwire1.setLayoutY(405);
+        rc_pane.getChildren().addAll(newwire, newwire1);
+        rc_comboBox.getItems().remove(0);
+        
+        
+        
+    }
+    else if (btnCount == 5) {
+        newwire.setLayoutX(150);
+        newwire.setLayoutY(405);
+        newwire1.setLayoutX(251);
+        newwire1.setLayoutY(405);
+        rc_pane.getChildren().addAll(newwire, newwire1);
+    }
+    }
+        else {
+            btnCount++;
+                ImageView newwires = new ImageView("file:src/View/Images/Wire.png");
+                ImageView newwires2 = new ImageView("file:src/View/Images/Wire.png");
+                ImageView newcornerp1 = new ImageView("file:src/View/Images/Corner1 parallel.png");
+                ImageView newwire1 = new ImageView("file:src/View/Images/Wire.png");
+                ImageView newcornerp2 = new ImageView("file:src/View/Images/Corner1 Series.png");
+                ImageView newwire2 = new ImageView("file:src/View/Images/Wire.png");
+    
+                ImageView newwire3 = new ImageView("file:src/View/Images/Wire.png");
+                ImageView newwire4 = new ImageView("file:src/View/Images/Wire.png");
+                ImageView newwire5 = new ImageView("file:src/View/Images/Wire.png");
+                ImageView newcircuitend = new ImageView("file:src/View/Images/CircuitSplitEnd.png");
+    if (btnCount == 2) {
+    
+    newwire3.setLayoutX(300);
+    newwire3.setLayoutY( -33);
+    newwire4.setLayoutX(300);
+    newwire4.setLayoutY( 25);
+    newwires.setLayoutX( 375 );  
+    newwires.setLayoutY( -33); 
+    
+    newwires2.setLayoutX( 375 );  
+    newwires2.setLayoutY( 25); 
+    
+    newcornerp1.setLayoutX(475);
+    newcornerp1.setLayoutY(70);
+    
+    newwire1.setLayoutX(475);
+    newwire1.setLayoutY(-33);
+    
+    newcornerp2.setLayoutX(565);
+    newcornerp2.setLayoutY(-8);
+    
+    newwire2.setLayoutX(540);
+    newwire2.setLayoutY(28); 
+    newwire2.setRotate(90);
+    rc_pane.getChildren().addAll(newwires, newwires2, newcornerp1, newwire1, newcornerp2, newwire2, newwire3, newwire4 );
+    }
+    else if (btnCount == 3) {
+        newwire1.setRotate(90);
+        newwire2.setRotate(90);
+        newwire3.setRotate(90);
+        newwire4.setRotate(90);
+        newwires.setRotate(90);
+        newwires2.setRotate(90);
+        newcornerp1.setRotate(90);
+        newcornerp2.setRotate(90);
+        newwire1.setLayoutX(475);
+        newwire1.setLayoutY(125);
+        newwire2.setLayoutX(543);
+        newwire2.setLayoutY(125);
+        newwires.setLayoutX(475);
+        newwires.setLayoutY(225);
+        newwires2.setLayoutX(543);
+        newwires2.setLayoutY(225);
+        newwire4.setLayoutX(475);
+        newwire4.setLayoutY(300);
+        newwire3.setLayoutX(543);
+        newwire3.setLayoutY(325);
+        newcornerp1.setLayoutX(540);
+        newcornerp1.setLayoutY(425);
+        newcornerp2.setLayoutX(500);
+        newcornerp2.setLayoutY(393);
+        newwire5.setLayoutX(470);
+        newwire5.setLayoutY(428);
+       
+        rc_pane.getChildren().addAll(newwire1, newwire2, newwires, newwires2,  newwire3, newwire4, newcornerp1, newcornerp2, newwire5);
+    }
+    else if (btnCount == 4) {
+        newwires.setLayoutX(390);
+        newwires.setLayoutY(428);
+        newwires2.setLayoutX(390);
+        newwires2.setLayoutY(365);
+        newwire1.setLayoutX(310);
+        newwire1.setLayoutY(428);
+        newwire2.setLayoutX(310);
+        newwire2.setLayoutY(365);
+        rc_pane.getChildren().addAll(newwires, newwires2, newwire1,newwire2);
+    }
+    else if (btnCount == 5) {
+        newwires.setLayoutX(210);
+        newwires.setLayoutY(428);
+        newwires2.setLayoutX(210);
+        newwires2.setLayoutY(365);
+        newcircuitend.setRotate(180);
+        newcircuitend.setLayoutX(110);
+        newcircuitend.setLayoutY(397);
+        
+        rc_pane.getChildren().addAll(newwires, newwires2, newcircuitend);
+        
+    }
+        }
+        }
+    
+    else {
+    VBox copy1 = new VBox();
+    VBox copy2 = new VBox();
+
+    copy1.setSpacing(resistorVbox.getSpacing());
+    copy1.setAlignment(resistorVbox.getAlignment());
+     copy2.setSpacing(resistorVbox.getSpacing());
+    copy2.setAlignment(resistorVbox.getAlignment());
+
+    int number1 = counter1 + 1;
+    int number2 = counter1 + 2;
+
+    Label lbl1 = new Label("Resistor #" + number1 + " Values:");
+    Label lbl2 = new Label("Resistor #" + number2 + " Values:");
+
+    lbl1.setFont(((Label) resistorVbox.getChildren().get(0)).getFont());
+    lbl2.setFont(((Label) resistorVbox.getChildren().get(0)).getFont());
+
+    copy1.getChildren().add(lbl1);
+    copy2.getChildren().add(lbl2);
+
+    for (Node n : resistorVbox.getChildren()) {
+
+        if (n instanceof Label original && !original.getText().startsWith("Resistor #")) {
+            Label clone1 = new Label(original.getText());
+            Label clone2 = new Label(original.getText());
+
+            clone1.setFont(original.getFont());
+            clone1.setStyle(original.getStyle());
+            clone1.setTextFill(original.getTextFill());
+
+            clone2.setFont(original.getFont());
+            clone2.setStyle(original.getStyle());
+            clone2.setTextFill(original.getTextFill());
+
+            copy1.getChildren().add(clone1);
+            copy2.getChildren().add(clone2);
+        }
+
+        else if (n instanceof TextField originalTF) {
+
+            TextField tf1 = new TextField("10.00");
+            TextField tf2 = new TextField("10.00");
+
+            tf1.setPromptText(originalTF.getPromptText());
+            tf1.setPrefWidth(originalTF.getPrefWidth());
+            tf1.setStyle(originalTF.getStyle());
+
+            tf2.setPromptText(originalTF.getPromptText());
+            tf2.setPrefWidth(originalTF.getPrefWidth());
+            tf2.setStyle(originalTF.getStyle());
+
+            copy1.getChildren().add(tf1);
+            copy2.getChildren().add(tf2);
+        }
+
+        else if (n instanceof Line originalLine) {
+
+            Line l1 = new Line(originalLine.getStartX(), originalLine.getStartY(),
+                               originalLine.getEndX(), originalLine.getEndY());
+            Line l2 = new Line(originalLine.getStartX(), originalLine.getStartY(),
+                               originalLine.getEndX(), originalLine.getEndY());
+
+            l1.setStroke(originalLine.getStroke());
+             l1.setStrokeWidth(originalLine.getStrokeWidth());
+            l1.setStyle(originalLine.getStyle());
+
+            l2.setStroke(originalLine.getStroke());
+            l2.setStrokeWidth(originalLine.getStrokeWidth());
+            l2.setStyle(originalLine.getStyle());
+
+            copy1.getChildren().add(l1);
+            copy2.getChildren().add(l2);
+        }
+    }
+
+    rcSidebarVbox.getChildren().add(10 + counter1, copy1);
+    rcSidebarVbox.getChildren().add(10 + counter1 + 1, copy2);
+
+    rcvbs.add(copy1);
+    rcvbs.add(copy2);
+
+    counter1 += 2;
+    btnCount ++;
+    rc_comboBox.getItems().remove(0);
+    rc_comboBox.getItems().add(0, "End branch");
+    split_circuit1 = true;
+    rc_comboBox.setValue("Resistor");
+    ImageView newcircuitSplit = new ImageView("file:src/View/Images/CircuitSplit.png");
+    ImageView newResistor = new ImageView("file:src/View/Images/Resistor.png");
+    ImageView newResistor2 = new ImageView("file:src/View/Images/Resistor.png");
+    ImageView newwire1 = new ImageView("file:src/View/Images/Wire.png");
+    ImageView newcornerp1 = new ImageView("file:src/View/Images/Corner1 parallel.png");
+    ImageView newcornerp2 = new ImageView("file:src/View/Images/Corner1 Series.png");
+    ImageView newwire2 = new ImageView("file:src/View/Images/Wire.png");
+    ImageView newwire3 = new ImageView("file:src/View/Images/Wire.png");
+    ImageView newwire4 = new ImageView("file:src/View/Images/Wire.png");
+    ImageView newwire5 = new ImageView("file:src/View/Images/Wire.png");
+    ImageView newwire6 = new ImageView("file:src/View/Images/Wire.png");
+    ImageView newwire7 = new ImageView("file:src/View/Images/Wire.png");
+    
+    if (btnCount == 1) {
+    newcircuitSplit.setLayoutX( 125 );  
+    newcircuitSplit.setLayoutY( -5 ); 
+    
+    newResistor.setLayoutX( 225 );  
+    newResistor.setLayoutY( -33); 
+    
+    newResistor2.setLayoutX( 225 );  
+    newResistor2.setLayoutY( 25); 
+    rc_pane.getChildren().addAll(newcircuitSplit, newResistor, newResistor2);
+    calcCircuitcustom1[counter1] = new CircuitSplit(0,0);
+      
+    
+       calcCircuitcustom1[counter1 + 1] = new Resistor(Double.parseDouble(((TextField)rcvbs.get(counter1-1).getChildren().get(2)).getText()), 0, 0);
+ 
+       calcCircuitcustom1[counter1 + 2] = new Resistor(Double.parseDouble(((TextField)rcvbs.get(counter1-1).getChildren().get(2)).getText()), 0, 0);
+
+    }
+    else if (btnCount == 2) {
+        newwire3.setLayoutX(220);
+        newwire3.setLayoutY(-5);
+        
+        newcircuitSplit.setLayoutX(285);
+        newcircuitSplit.setLayoutY(-5);
+        newResistor.setLayoutX( 385 );  
+        newResistor.setLayoutY( -33); 
+        
+    
+        newResistor2.setLayoutX( 385 );  
+        newResistor2.setLayoutY( 25);
+        newcornerp1.setLayoutX(475);
+        newcornerp1.setLayoutY(70);
+    
+        newwire1.setLayoutX(485);
+        newwire1.setLayoutY(-33);
+     
+        newcornerp2.setLayoutX(570);
+        newcornerp2.setLayoutY(-8);
+    
+        newwire2.setLayoutX(545);
+        newwire2.setLayoutY(28); 
+        newwire2.setRotate(90);
+        rc_pane.getChildren().addAll(newwire3, newcircuitSplit, newResistor, newResistor2, newwire1, newwire2, newcornerp1, newcornerp2);
+        calcCircuitcustom1[counter1] = new CircuitSplit(0,0);
+      
+    
+       calcCircuitcustom1[counter1 + 1] = new Resistor(Double.parseDouble(((TextField)rcvbs.get(counter1-1).getChildren().get(2)).getText()), 0, 0);
+ 
+       calcCircuitcustom1[counter1 + 2] = new Resistor(Double.parseDouble(((TextField)rcvbs.get(counter1-1).getChildren().get(2)).getText()), 0, 0);
+
+    
+    }
+    else if (btnCount == 3) {
+        newcircuitSplit.setRotate(90);
+        newcircuitSplit.setLayoutX(525);
+        newcircuitSplit.setLayoutY(65);
+        newwire1.setRotate(90);
+        newwire2.setRotate(90);
+        newwire3.setRotate(90);
+        newwire4.setRotate(90);
+        newResistor.setRotate(90);
+        newResistor2.setRotate(90);
+        newcornerp1.setRotate(90);
+        newcornerp2.setRotate(90);
+        newwire1.setLayoutX(495);
+        newwire1.setLayoutY(125);
+        newwire2.setLayoutX(553);
+        newwire2.setLayoutY(125);
+        newResistor.setLayoutX(495);
+        newResistor.setLayoutY(225);
+        newResistor2.setLayoutX(553);
+        newResistor2.setLayoutY(225);
+        newwire4.setLayoutX(495);
+        newwire4.setLayoutY(300);
+        newwire3.setLayoutX(553);
+        newwire3.setLayoutY(325);
+        newcornerp1.setLayoutX(550);
+        newcornerp1.setLayoutY(425);
+        newcornerp2.setLayoutX(520);
+        newcornerp2.setLayoutY(393);
+        newwire5.setLayoutX(508);
+        newwire5.setLayoutY(428);
+        newwire6.setLayoutX(480);
+        newwire6.setLayoutY(428);
+        newwire7.setLayoutX(450);
+        newwire7.setLayoutY(368);
+        
+       
+        rc_pane.getChildren().addAll(newcircuitSplit, newwire1, newwire2, newResistor, newResistor2,  newwire3, newwire4, newcornerp1, newcornerp2, newwire5, newwire6, newwire7);
+        calcCircuitcustom1[counter1] = new CircuitSplit(0,0);
+      
+    
+       calcCircuitcustom1[counter1 + 1] = new Resistor(Double.parseDouble(((TextField)rcvbs.get(counter1-1).getChildren().get(2)).getText()), 0, 0);
+ 
+       calcCircuitcustom1[counter1 + 2] = new Resistor(Double.parseDouble(((TextField)rcvbs.get(counter1-1).getChildren().get(2)).getText()), 0, 0);
+
+    }
+    else if (btnCount == 4) {
+        newcircuitSplit.setRotate(180);
+        newcircuitSplit.setLayoutX(453);
+        newcircuitSplit.setLayoutY(405);
+        newResistor.setLayoutX(353);
+        newResistor.setLayoutY(375);
+        newResistor2.setLayoutX(353);
+        newResistor2.setLayoutY(433);
+        newwire1.setLayoutX(280);
+        newwire1.setLayoutY(370);
+        newwire2.setLayoutX(280);
+        newwire2.setLayoutY(430);
+        rc_pane.getChildren().addAll(newcircuitSplit, newResistor, newResistor2, newwire1, newwire2);
+       calcCircuitcustom1[counter1] = new CircuitSplit(0,0);
+      
+    
+       calcCircuitcustom1[counter1 + 1] = new Resistor(Double.parseDouble(((TextField)rcvbs.get(counter1-1).getChildren().get(2)).getText()), 0, 0);
+ 
+       calcCircuitcustom1[counter1 + 2] = new Resistor(Double.parseDouble(((TextField)rcvbs.get(counter1-1).getChildren().get(2)).getText()), 0, 0);
+
+        
+    }
+    
+    
+    }
+    
+   }
+        else {
+             Label lbl = new Label("Unable to add anymore components");
+            rcSidebarVbox.getChildren().add(9, lbl);
+        }
+   }
     /**
      * adds either a branch or a capacitor to the circuit
      * @param event 
      */
     @FXML
     private void ccAddBtnPressed(ActionEvent event) {
-        if(cc_comboBox.getSelectionModel().getSelectedItem().equals("Capacitor")) {
-    VBox copy = new VBox();
-    copy.setSpacing(capacitorvb.getSpacing());
-    copy.setAlignment(capacitorvb.getAlignment());
-
-    
-    for (Node n : capacitorvb.getChildren()) {
-
-        
-            if (n instanceof Label originalLabel) {
-            if (originalLabel.getText().equals("Capacitor #"+ counter2 + " Values:")) {
-                originalLabel.setText("Capacitor #" + (counter2 + 1) +" Values:");
-            }
-            Label lbl = new Label(originalLabel.getText());
-            lbl.setFont(originalLabel.getFont());
-            lbl.setTextFill(originalLabel.getTextFill());
-            lbl.setStyle(originalLabel.getStyle());
-            copy.getChildren().add(lbl);
-        }
-            else if (n instanceof TextField originalTF) {
-                TextField tf = new TextField();
-                tf.setText(originalTF.getText());
-                tf.setPromptText(originalTF.getPromptText());
-                tf.setPrefWidth(originalTF.getPrefWidth());
-                tf.setStyle(originalTF.getStyle());
-                tf.setText("10.00");
-                copy.getChildren().add(tf);
-            }
-            else if (n instanceof Line originalLine) {
-                Line line = new Line();
-
-                line.setStartX(originalLine.getStartX());
-                line.setStartY(originalLine.getStartY());
-                line.setEndX(originalLine.getEndX());
-                line.setEndY(originalLine.getEndY());
-
-                line.setStroke(originalLine.getStroke());
-                line.setStrokeWidth(originalLine.getStrokeWidth());
-                line.setStyle(originalLine.getStyle());
-
-        copy.getChildren().add(line);
-            }
-        
-        
-    }
-
-    copy.setVisible(true);
-
-    
-    ccSidebarVbox.getChildren().add(10 + counter2, copy);
-    ccvbs.add(counter2,copy);
-
-    counter2++;
-    }
-        else {
+        if(btnCount2 < 5) { 
+    if (cc_comboBox.getSelectionModel().getSelectedItem().equals("Capacitor")) {
+        if (!split_circuit2) {
             VBox copy = new VBox();
-    copy.setSpacing(capacitorvb.getSpacing());
-    copy.setAlignment(capacitorvb.getAlignment());
+            copy.setSpacing(capacitorvb.getSpacing());
+            copy.setAlignment(capacitorvb.getAlignment());
 
-    
-    for (Node n : capacitorvb.getChildren()) {
+            for (Node n : capacitorvb.getChildren()) {
 
-        
-            if (n instanceof Label originalLabel) {
-            if (originalLabel.getText().equals("Capacitor #"+ counter2 + " Values:")) {
-                originalLabel.setText("Capacitor #" + (counter2 + 1) +" Values:");
+                if (n instanceof Label originalLabel) {
+                    if (originalLabel.getText().equals("Capacitor #"+ counter2 + " Values:")||originalLabel.getText().equals("Capacitor #"+ counter2 + 1 + " Values:")||originalLabel.getText().equals("Capacitor #0 Values:")) {
+                        originalLabel.setText("Capacitor #" + (counter2 + 1) +" Values:");
+                    }
+                    Label lbl = new Label(originalLabel.getText());
+                    lbl.setFont(originalLabel.getFont());
+                    lbl.setTextFill(originalLabel.getTextFill());
+                    lbl.setStyle(originalLabel.getStyle());
+                    copy.getChildren().add(lbl);
+                }
+                else if (n instanceof TextField originalTF) {
+                    TextField tf = new TextField();
+                    tf.setText(originalTF.getText());
+                    tf.setPromptText(originalTF.getPromptText());
+                    tf.setPrefWidth(originalTF.getPrefWidth());
+                    tf.setStyle(originalTF.getStyle());
+                    tf.setText("10.00");
+                    copy.getChildren().add(tf);
+                }
+                else if (n instanceof Line originalLine) {
+                    Line line = new Line();
+                    line.setStartX(originalLine.getStartX());
+                    line.setStartY(originalLine.getStartY());
+                    line.setEndX(originalLine.getEndX());
+                    line.setEndY(originalLine.getEndY());
+                    line.setStroke(originalLine.getStroke());
+                    line.setStrokeWidth(originalLine.getStrokeWidth());
+                    line.setStyle(originalLine.getStyle());
+                    copy.getChildren().add(line);
+                }
+
             }
-            Label lbl = new Label(originalLabel.getText());
-            lbl.setFont(originalLabel.getFont());
-            lbl.setTextFill(originalLabel.getTextFill());
-            lbl.setStyle(originalLabel.getStyle());
-            copy.getChildren().add(lbl);
+            copy.setVisible(true);
+            ccSidebarVbox.getChildren().add(10 + counter2, copy);
+            ccvbs.add(counter2,copy);
+            counter2++;
+            btnCount2++;
+            ImageView newCapacitor = new ImageView("file:src/View/Images/Capacitor.png");
+            ImageView newwire1 = new ImageView("file:src/View/Images/Wire.png");
+            ImageView newwire2 = new ImageView("file:src/View/Images/Wire.png");
+            ImageView newcorner1 = new ImageView("file:src/View/Images/Corner1 Series.png");
+            ImageView newcorner2 = new ImageView("file:src/View/Images/Corner2 Series.png");
+            if (btnCount2 == 1) {
+                newCapacitor.setLayoutX( 150 );
+                newCapacitor.setLayoutY( -5 );
+                cc_pane.getChildren().addAll(newCapacitor);
+         
+       calcCircuitcustom2[counter2] = new Capacitor(Double.parseDouble(((TextField)ccvbs.get(counter1-1).getChildren().get(2)).getText()), 0, 0);
+
+            }
+
+            else if (btnCount2 == 2) {
+                newCapacitor.setLayoutX( 350 );
+                newCapacitor.setLayoutY( -5 );
+                newcorner1.setLayoutX( 550 );
+                newwire1.setLayoutX( 450 );
+                newwire1.setLayoutY( -5 );
+                newwire2.setLayoutX(250);
+                newwire2.setLayoutY(-5);
+                newcorner1.setLayoutY( 20);
+                cc_pane.getChildren().addAll(newCapacitor, newwire1,newwire2, newcorner1);
+                       calcCircuitcustom2[counter2] = new Capacitor(Double.parseDouble(((TextField)ccvbs.get(counter1-1).getChildren().get(2)).getText()), 0, 0);
+
+
+            }
+            else if (btnCount2 == 3) {
+                newCapacitor.setRotate(90);
+                newwire1.setRotate(90);
+                newwire2.setRotate(90);
+                newwire1.setLayoutX(525);
+                newwire1.setLayoutY(70);
+                newCapacitor.setLayoutX( 525 );
+                newCapacitor.setLayoutY( 170 );
+                newwire2.setLayoutX(525);
+                newwire2.setLayoutY(270);
+                newcorner2.setLayoutX(552);
+                newcorner2.setLayoutY(370);
+                cc_pane.getChildren().addAll(newCapacitor, newwire1, newwire2, newcorner2);
+                       calcCircuitcustom2[counter2] = new Capacitor(Double.parseDouble(((TextField)ccvbs.get(counter1-1).getChildren().get(2)).getText()), 0, 0);
+
+            }else if (btnCount2 == 4) {
+                newCapacitor.setLayoutX(352);
+                newCapacitor.setLayoutY(405);
+                newwire1.setLayoutX(451);
+                newwire1.setLayoutY(405);
+                cc_pane.getChildren().addAll(newCapacitor, newwire1);
+                       calcCircuitcustom2[counter2 ] = new Capacitor(Double.parseDouble(((TextField)ccvbs.get(counter1-1).getChildren().get(2)).getText()), 0, 0);
+
+                cc_comboBox.getItems().remove(0);
+            }
+            else if (btnCount2 == 5) {
+                newCapacitor.setLayoutX(150);
+                newCapacitor.setLayoutY(405);
+                newwire1.setLayoutX(251);
+                newwire1.setLayoutY(405);
+                cc_pane.getChildren().addAll(newCapacitor, newwire1);
+                       calcCircuitcustom2[counter2] = new Capacitor(Double.parseDouble(((TextField)ccvbs.get(counter1-1).getChildren().get(2)).getText()), 0, 0);
+
+            }
         }
-            else if (n instanceof TextField originalTF) {
-                TextField tf = new TextField();
-                tf.setText(originalTF.getText());
-                tf.setPromptText(originalTF.getPromptText());
-                tf.setPrefWidth(originalTF.getPrefWidth());
-                tf.setStyle(originalTF.getStyle());
-                tf.setText("10.00");
-                copy.getChildren().add(tf);
+        else {
+            VBox copy1 = new VBox();
+            VBox copy2 = new VBox();
+
+            copy1.setSpacing(capacitorvb.getSpacing());
+            copy1.setAlignment(capacitorvb.getAlignment());
+            copy2.setSpacing(capacitorvb.getSpacing());
+            copy2.setAlignment(capacitorvb.getAlignment());
+
+            int number1 = counter2 + 1;
+            int number2 = counter2 + 2;
+
+            Label lbl1 = new Label("Capacitor #" + number1 + " Values:");
+            Label lbl2 = new Label("Capacitor #" + number2 + " Values:");
+
+            lbl1.setFont(((Label) capacitorvb.getChildren().get(0)).getFont());
+            lbl2.setFont(((Label) capacitorvb.getChildren().get(0)).getFont());
+
+            copy1.getChildren().add(lbl1);
+            copy2.getChildren().add(lbl2);
+
+            for (Node n : capacitorvb.getChildren()) {
+                if (n instanceof Label original && !original.getText().startsWith("Capacitor #")) {
+                    Label clone1 = new Label(original.getText());
+                    Label clone2 = new Label(original.getText());
+
+                    clone1.setFont(original.getFont());
+                    clone1.setStyle(original.getStyle());
+                    clone1.setTextFill(original.getTextFill());
+
+                    clone2.setFont(original.getFont());
+                    clone2.setStyle(original.getStyle());
+                    clone2.setTextFill(original.getTextFill());
+
+                    copy1.getChildren().add(clone1);
+                    copy2.getChildren().add(clone2);
+                }
+                else if (n instanceof TextField originalTF) {
+                    TextField tf1 = new TextField("10.00");
+                    TextField tf2 = new TextField("10.00");
+
+                    tf1.setPromptText(originalTF.getPromptText());
+                    tf1.setPrefWidth(originalTF.getPrefWidth());
+                    tf1.setStyle(originalTF.getStyle());
+
+                    tf2.setPromptText(originalTF.getPromptText());
+                    tf2.setPrefWidth(originalTF.getPrefWidth());
+                    tf2.setStyle(originalTF.getStyle());
+
+                    copy1.getChildren().add(tf1);
+                    copy2.getChildren().add(tf2);
+                }
+                else if (n instanceof Line originalLine) {
+                    Line l1 = new Line(originalLine.getStartX(), originalLine.getStartY(),
+                            originalLine.getEndX(), originalLine.getEndY());
+                    Line l2 = new Line(originalLine.getStartX(), originalLine.getStartY(),
+                            originalLine.getEndX(), originalLine.getEndY());
+
+                    l1.setStroke(originalLine.getStroke());
+                    l1.setStrokeWidth(originalLine.getStrokeWidth());
+                    l1.setStyle(originalLine.getStyle());
+
+                    l2.setStroke(originalLine.getStroke());
+                    l2.setStrokeWidth(originalLine.getStrokeWidth());
+                    l2.setStyle(originalLine.getStyle());
+
+                    copy1.getChildren().add(l1);
+                    copy2.getChildren().add(l2);
+                }
             }
-            else if (n instanceof Line originalLine) {
-                Line line = new Line();
 
-                line.setStartX(originalLine.getStartX());
-                line.setStartY(originalLine.getStartY());
-                line.setEndX(originalLine.getEndX());
-                line.setEndY(originalLine.getEndY());
+            ccSidebarVbox.getChildren().add(10 + counter2, copy1);
+            ccSidebarVbox.getChildren().add(10 + counter2 + 1, copy2);
 
-                line.setStroke(originalLine.getStroke());
-                line.setStrokeWidth(originalLine.getStrokeWidth());
-                line.setStyle(originalLine.getStyle());
+            ccvbs.add(copy1);
+            ccvbs.add(copy2);
+            btnCount2++;
+            counter2 += 2;
+            ImageView newCapacitor = new ImageView("file:src/View/Images/Capacitor.png");
+            ImageView newCapacitor2 = new ImageView("file:src/View/Images/Capacitor.png");
+            ImageView newcornerp1 = new ImageView("file:src/View/Images/Corner1 parallel.png");
+            ImageView newwire1 = new ImageView("file:src/View/Images/Wire.png");
+            ImageView newcornerp2 = new ImageView("file:src/View/Images/Corner1 Series.png");
+            ImageView newwire2 = new ImageView("file:src/View/Images/Wire.png");
 
-        copy.getChildren().add(line);
+            ImageView newwire3 = new ImageView("file:src/View/Images/Wire.png");
+            ImageView newwire4 = new ImageView("file:src/View/Images/Wire.png");
+            ImageView newwire5 = new ImageView("file:src/View/Images/Wire.png");
+            ImageView newcircuitend = new ImageView("file:src/View/Images/CircuitSplitEnd.png");
+            if (btnCount2 == 2) {
+                newwire3.setLayoutX(300);
+                newwire3.setLayoutY( -33);
+                newwire4.setLayoutX(300);
+                newwire4.setLayoutY( 25);
+                newCapacitor.setLayoutX( 375 );
+                newCapacitor.setLayoutY( -33 );
+
+                newCapacitor2.setLayoutX( 375 );
+                newCapacitor2.setLayoutY( 25 );
+
+                newcornerp1.setLayoutX(475);
+                newcornerp1.setLayoutY(70);
+
+                newwire1.setLayoutX(475);
+                newwire1.setLayoutY(-33);
+
+                newcornerp2.setLayoutX(565);
+                newcornerp2.setLayoutY(-8);
+
+                newwire2.setLayoutX(540);
+                newwire2.setLayoutY(28);
+
+                newwire2.setRotate(90);
+                cc_pane.getChildren().addAll(newCapacitor, newCapacitor2, newcornerp1, newwire1, newcornerp2, newwire2, newwire3, newwire4 );
+                
+                calcCircuitcustom2[counter2] = new CircuitSplit(0,0);
+                calcCircuitcustom2[counter2+1] = new Capacitor(Double.parseDouble(((TextField)ccvbs.get(counter1-1).getChildren().get(2)).getText()), 0, 0);
+                calcCircuitcustom2[counter2+2] = new Capacitor(Double.parseDouble(((TextField)ccvbs.get(counter1-1).getChildren().get(2)).getText()), 0, 0);
+
             }
-        
-        
+            else if (btnCount2 == 3) {
+                newwire1.setRotate(90);
+                newwire2.setRotate(90);
+                newwire3.setRotate(90);
+                newwire4.setRotate(90);
+                newCapacitor.setRotate(90);
+                newCapacitor2.setRotate(90);
+                newcornerp1.setRotate(90);
+                newcornerp2.setRotate(90);
+                newwire1.setLayoutX(475);
+                newwire1.setLayoutY(125);
+                newwire2.setLayoutX(543);
+                newwire2.setLayoutY(125);
+                newCapacitor.setLayoutX(475);
+                newCapacitor.setLayoutY(225);
+                newCapacitor2.setLayoutX(543);
+                newCapacitor2.setLayoutY(225);
+                newwire4.setLayoutX(475);
+                newwire4.setLayoutY(300);
+                newwire3.setLayoutX(543);
+                newwire3.setLayoutY(325);
+                newcornerp1.setLayoutX(540);
+                newcornerp1.setLayoutY(425);
+                newcornerp2.setLayoutX(500);
+                newcornerp2.setLayoutY(393);
+                newwire5.setLayoutX(470);
+                newwire5.setLayoutY(428);
+                cc_pane.getChildren().addAll(newwire1, newwire2, newCapacitor, newCapacitor2,  newwire3, newwire4, newcornerp1, newcornerp2, newwire5);
+            calcCircuitcustom2[counter2] = new CircuitSplit(0,0);
+                calcCircuitcustom2[counter2+1] = new Capacitor(Double.parseDouble(((TextField)ccvbs.get(counter1-1).getChildren().get(2)).getText()), 0, 0);
+                calcCircuitcustom2[counter2+2] = new Capacitor(Double.parseDouble(((TextField)ccvbs.get(counter1-1).getChildren().get(2)).getText()), 0, 0);
+
+            }
+            else if (btnCount2 == 4) {
+                newCapacitor.setLayoutX(390);
+                newCapacitor.setLayoutY(428);
+                newCapacitor2.setLayoutX(390);
+                newCapacitor2.setLayoutY(365);
+                newwire1.setLayoutX(310);
+                newwire1.setLayoutY(428);
+                newwire2.setLayoutX(310);
+                newwire2.setLayoutY(365);
+                cc_pane.getChildren().addAll(newCapacitor, newCapacitor2, newwire1,newwire2);
+                calcCircuitcustom2[counter2] = new CircuitSplit(0,0);
+                calcCircuitcustom2[counter2+1] = new Capacitor(Double.parseDouble(((TextField)ccvbs.get(counter1-1).getChildren().get(2)).getText()), 0, 0);
+                calcCircuitcustom2[counter2+2] = new Capacitor(Double.parseDouble(((TextField)ccvbs.get(counter1-1).getChildren().get(2)).getText()), 0, 0);
+
+            }
+            else if (btnCount2 == 5) {
+                newCapacitor.setLayoutX(210);
+                newCapacitor.setLayoutY(428);
+                newCapacitor2.setLayoutX(210);
+                newCapacitor2.setLayoutY(365);
+                newcircuitend.setRotate(180);
+                newcircuitend.setLayoutX(110);
+                newcircuitend.setLayoutY(397);
+
+                cc_pane.getChildren().addAll(newCapacitor, newCapacitor2, newcircuitend);
+                calcCircuitcustom2[counter2] = new CircuitSplit(0,0);
+                calcCircuitcustom2[counter2+1] = new Capacitor(Double.parseDouble(((TextField)ccvbs.get(counter1-1).getChildren().get(2)).getText()), 0, 0);
+                calcCircuitcustom2[counter2+2] = new Capacitor(Double.parseDouble(((TextField)ccvbs.get(counter1-1).getChildren().get(2)).getText()), 0, 0);
+
+            }
+        }
+    }
+    else if (cc_comboBox.getSelectionModel().getSelectedItem().equals("End branch")) {
+        ImageView newCircuitend = new ImageView("file:src/View/Images/CircuitSplitEnd.png");
+        ImageView newwire = new ImageView("file:src/View/Images/Wire.png");
+        ImageView newwire2 = new ImageView("file:src/View/Images/Wire.png");
+        ImageView newwire3 = new ImageView("file:src/View/Images/Wire.png");
+        ImageView newcorner = new ImageView("file:src/View/Images/Corner1 Series.png");
+        btnCount2++;
+        split_circuit2 = false;
+        cc_comboBox.getItems().remove(0);
+        cc_comboBox.getItems().add(0, "Branch");
+        cc_comboBox.setValue("Capacitor");
+
+        if (btnCount2 == 2) {
+            newwire2.setLayoutX(300);
+            newwire2.setLayoutY(-33);
+            newwire3.setLayoutX(300);
+            newwire3.setLayoutY(25);
+            newCircuitend.setLayoutX(375);
+            newCircuitend.setLayoutY(-5);
+            newwire.setLayoutX(450);
+            newwire.setLayoutY(-5);
+            newcorner.setLayoutX(550);
+            newcorner.setLayoutY(20);
+            cc_pane.getChildren().addAll(newCircuitend, newwire, newcorner, newwire2, newwire3);
+            calcCircuitcustom2[counter2] = new CircuitSplit(0,0);
+                
+
+        }
+        else if (btnCount2 == 3) {
+            newCircuitend.setRotate(90);
+            newwire.setRotate(90);
+            newwire2.setRotate(90);
+            newcorner.setRotate(90);
+            newCircuitend.setLayoutX(510);
+            newCircuitend.setLayoutY(125);
+            newwire.setLayoutX(510);
+            newwire.setLayoutY(225);
+            newwire2.setLayoutX(510);
+            newwire2.setLayoutY(325);
+            newcorner.setLayoutX(535);
+            newcorner.setLayoutY(425);
+            cc_pane.getChildren().addAll(newCircuitend, newwire, newwire2, newcorner);
+            calcCircuitcustom2[counter2] = new CircuitSplit(0,0);
+                
+        }
+        else if (btnCount2 == 4) {
+            newCircuitend.setRotate(180);
+            newCircuitend.setLayoutX(390);
+            newCircuitend.setLayoutY(395);
+            newwire.setLayoutX(295);
+            newwire.setLayoutY(400);
+            cc_pane.getChildren().addAll(newCircuitend, newwire);
+            calcCircuitcustom2[counter2] = new CircuitSplit(0,0);
+            
+            cc_comboBox.getItems().remove(0);
+        }
+        else if (btnCount2 == 5) {
+            newCircuitend.setRotate(180);
+            newCircuitend.setLayoutX(250);
+            newCircuitend.setLayoutY(398);
+
+            newwire2.setLayoutX(150);
+            newwire2.setLayoutY(402);
+            cc_pane.getChildren().addAll(newCircuitend, newwire2);
+            calcCircuitcustom2[counter2] = new CircuitSplit(0,0);
+                
+        }
+
+    }
+    else if (cc_comboBox.getSelectionModel().getSelectedItem().equals("Wire")) {
+        if (!split_circuit2) {
+            btnCount2++;
+            ImageView newwire = new ImageView("file:src/View/Images/Wire.png");
+            ImageView newwire1 = new ImageView("file:src/View/Images/Wire.png");
+            ImageView newwire2 = new ImageView("file:src/View/Images/Wire.png");
+            ImageView newcorner1 = new ImageView("file:src/View/Images/Corner1 Series.png");
+            ImageView newcorner2 = new ImageView("file:src/View/Images/Corner2 Series.png");
+            if (btnCount2 == 1) {
+                newwire.setLayoutX( 150 );
+                newwire.setLayoutY( -5 );
+                cc_pane.getChildren().addAll(newwire);
+            }
+
+            else if (btnCount2 == 2) {
+                newwire.setLayoutX( 350 );
+                newwire.setLayoutY( -5 );
+                newcorner1.setLayoutX( 550 );
+                newwire1.setLayoutX( 450 );
+                newwire1.setLayoutY( -5 );
+                newwire2.setLayoutX(250);
+                newwire2.setLayoutY(-5);
+                newcorner1.setLayoutY( 20);
+                cc_pane.getChildren().addAll(newwire, newwire1,newwire2, newcorner1);
+
+            }
+            else if (btnCount2 == 3) {
+                newwire.setRotate(90);
+                newwire1.setRotate(90);
+                newwire2.setRotate(90);
+                newwire1.setLayoutX(525);
+                newwire1.setLayoutY(70);
+                newwire.setLayoutX( 525 );
+                newwire.setLayoutY( 170 );
+                newwire2.setLayoutX(525);
+                newwire2.setLayoutY(270);
+                newcorner2.setLayoutX(552);
+                newcorner2.setLayoutY(370);
+                cc_pane.getChildren().addAll(newwire, newwire1, newwire2, newcorner2);
+            }else if (btnCount2 == 4) {
+                newwire.setLayoutX(352);
+                newwire.setLayoutY(405);
+                newwire1.setLayoutX(451);
+                newwire1.setLayoutY(405);
+                cc_pane.getChildren().addAll(newwire, newwire1);
+                cc_comboBox.getItems().remove(0);
+            }
+            else if (btnCount2 == 5) {
+                newwire.setLayoutX(150);
+                newwire.setLayoutY(405);
+                newwire1.setLayoutX(251);
+                newwire1.setLayoutY(405);
+                cc_pane.getChildren().addAll(newwire, newwire1);
+            }
+        }
+        else {
+            btnCount2++;
+            ImageView newwires = new ImageView("file:src/View/Images/Wire.png");
+            ImageView newwires2 = new ImageView("file:src/View/Images/Wire.png");
+            ImageView newcornerp1 = new ImageView("file:src/View/Images/Corner1 parallel.png");
+            ImageView newwire1 = new ImageView("file:src/View/Images/Wire.png");
+            ImageView newcornerp2 = new ImageView("file:src/View/Images/Corner1 Series.png");
+            ImageView newwire2 = new ImageView("file:src/View/Images/Wire.png");
+
+            ImageView newwire3 = new ImageView("file:src/View/Images/Wire.png");
+            ImageView newwire4 = new ImageView("file:src/View/Images/Wire.png");
+            ImageView newwire5 = new ImageView("file:src/View/Images/Wire.png");
+            ImageView newcircuitend = new ImageView("file:src/View/Images/CircuitSplitEnd.png");
+            if (btnCount2 == 2) {
+                newwire3.setLayoutX(300);
+                newwire3.setLayoutY( -33);
+                newwire4.setLayoutX(300);
+                newwire4.setLayoutY( 25);
+                newwires.setLayoutX( 375 );
+                newwires.setLayoutY( -33 );
+
+                newwires2.setLayoutX( 375 );
+                newwires2.setLayoutY( 25 );
+
+                newcornerp1.setLayoutX(475);
+                newcornerp1.setLayoutY(70);
+
+                newwire1.setLayoutX(475);
+                newwire1.setLayoutY(-33);
+
+                newcornerp2.setLayoutX(565);
+                newcornerp2.setLayoutY(-8);
+
+                newwire2.setLayoutX(540);
+                newwire2.setLayoutY(28);
+
+                newwire2.setRotate(90);
+                cc_pane.getChildren().addAll(newwires, newwires2, newcornerp1, newwire1, newcornerp2, newwire2, newwire3, newwire4 );
+            }
+            else if (btnCount2 == 3) {
+                newwire1.setRotate(90);
+                newwire2.setRotate(90);
+                newwire3.setRotate(90);
+                newwire4.setRotate(90);
+                newwires.setRotate(90);
+                newwires2.setRotate(90);
+                newcornerp1.setRotate(90);
+                newcornerp2.setRotate(90);
+                newwire1.setLayoutX(475);
+                newwire1.setLayoutY(125);
+                newwire2.setLayoutX(543);
+                newwire2.setLayoutY(125);
+                newwires.setLayoutX(475);
+                newwires.setLayoutY(225);
+                newwires2.setLayoutX(543);
+                newwires2.setLayoutY(225);
+                newwire4.setLayoutX(475);
+                newwire4.setLayoutY(300);
+                newwire3.setLayoutX(543);
+                newwire3.setLayoutY(325);
+                newcornerp1.setLayoutX(540);
+                newcornerp1.setLayoutY(425);
+                newcornerp2.setLayoutX(500);
+                newcornerp2.setLayoutY(393);
+                newwire5.setLayoutX(470);
+                newwire5.setLayoutY(428);
+                cc_pane.getChildren().addAll(newwire1, newwire2, newwires, newwires2,  newwire3, newwire4, newcornerp1, newcornerp2, newwire5);
+            }
+            else if (btnCount2 == 4) {
+                newwires.setLayoutX(390);
+                newwires.setLayoutY(428);
+                newwires2.setLayoutX(390);
+                newwires2.setLayoutY(365);
+                newwire1.setLayoutX(310);
+                newwire1.setLayoutY(428);
+                newwire2.setLayoutX(310);
+                newwire2.setLayoutY(365);
+                cc_pane.getChildren().addAll(newwires, newwires2, newwire1,newwire2);
+            }
+            else if (btnCount2 == 5) {
+                newwires.setLayoutX(210);
+                newwires.setLayoutY(428);
+                newwires2.setLayoutX(210);
+                newwires2.setLayoutY(365);
+                newcircuitend.setRotate(180);
+                newcircuitend.setLayoutX(110);
+                newcircuitend.setLayoutY(397);
+
+                cc_pane.getChildren().addAll(newwires, newwires2, newcircuitend);
+            }
+        }
     }
 
-    copy.setVisible(true);
+    else {
+        VBox copy1 = new VBox();
+        VBox copy2 = new VBox();
 
-    
-    ccSidebarVbox.getChildren().add(10 + counter2, copy);
-    ccvbs.add(counter2,copy);
+        copy1.setSpacing(capacitorvb.getSpacing());
+        copy1.setAlignment(capacitorvb.getAlignment());
 
-    counter2++;
+        copy2.setSpacing(capacitorvb.getSpacing());
+        copy2.setAlignment(capacitorvb.getAlignment());
+
+        int number1 = counter2 + 1;
+        int number2 = counter2 + 2;
+
+        Label lbl1 = new Label("Capacitor #" + number1 + " Values:");
+        Label lbl2 = new Label("Capacitor #" + number2 + " Values:");
+
+        lbl1.setFont(((Label) capacitorvb.getChildren().get(0)).getFont());
+        lbl2.setFont(((Label) capacitorvb.getChildren().get(0)).getFont());
+
+        copy1.getChildren().add(lbl1);
+        copy2.getChildren().add(lbl2);
+
+        for (Node n : capacitorvb.getChildren()) {
+            if (n instanceof Label original && !original.getText().startsWith("Capacitor #")) {
+                Label clone1 = new Label(original.getText());
+                Label clone2 = new Label(original.getText());
+
+                clone1.setFont(original.getFont());
+                clone1.setStyle(original.getStyle());
+                clone1.setTextFill(original.getTextFill());
+
+                clone2.setFont(original.getFont());
+                clone2.setStyle(original.getStyle());
+                clone2.setTextFill(original.getTextFill());
+
+                copy1.getChildren().add(clone1);
+                copy2.getChildren().add(clone2);
+            }
+            else if (n instanceof TextField originalTF) {
+                TextField tf1 = new TextField("10.00");
+                TextField tf2 = new TextField("10.00");
+
+                tf1.setPromptText(originalTF.getPromptText());
+                tf1.setPrefWidth(originalTF.getPrefWidth());
+                tf1.setStyle(originalTF.getStyle());
+
+                tf2.setPromptText(originalTF.getPromptText());
+                tf2.setPrefWidth(originalTF.getPrefWidth());
+                tf2.setStyle(originalTF.getStyle());
+
+                copy1.getChildren().add(tf1);
+                copy2.getChildren().add(tf2);
+            }
+            else if (n instanceof Line originalLine) {
+                Line l1 = new Line(originalLine.getStartX(), originalLine.getStartY(),
+                        originalLine.getEndX(), originalLine.getEndY());
+                Line l2 = new Line(originalLine.getStartX(), originalLine.getStartY(),
+                        originalLine.getEndX(), originalLine.getEndY());
+
+                l1.setStroke(originalLine.getStroke());
+                l1.setStrokeWidth(originalLine.getStrokeWidth());
+                l1.setStyle(originalLine.getStyle());
+
+                l2.setStroke(originalLine.getStroke());
+                l2.setStrokeWidth(originalLine.getStrokeWidth());
+                l2.setStyle(originalLine.getStyle());
+
+                copy1.getChildren().add(l1);
+                copy2.getChildren().add(l2);
+            }
         }
+
+        ccSidebarVbox.getChildren().add(10 + counter2, copy1);
+        ccSidebarVbox.getChildren().add(10 + counter2 + 1, copy2);
+
+        ccvbs.add(copy1);
+        ccvbs.add(copy2);
+
+        counter2 += 2;
+        btnCount2++;
+        cc_comboBox.getItems().remove(0);
+        cc_comboBox.getItems().add(0, "End branch");
+        split_circuit2 = true;
+        cc_comboBox.setValue("Capacitor");
+        ImageView newcircuitSplit = new ImageView("file:src/View/Images/CircuitSplit.png");
+        ImageView newCapacitor = new ImageView("file:src/View/Images/Capacitor.png");
+        ImageView newCapacitor2 = new ImageView("file:src/View/Images/Capacitor.png");
+        ImageView newwire1 = new ImageView("file:src/View/Images/Wire.png");
+        ImageView newcornerp1 = new ImageView("file:src/View/Images/Corner1 parallel.png");
+        ImageView newcornerp2 = new ImageView("file:src/View/Images/Corner1 Series.png");
+        ImageView newwire2 = new ImageView("file:src/View/Images/Wire.png");
+        ImageView newwire3 = new ImageView("file:src/View/Images/Wire.png");
+        ImageView newwire4 = new ImageView("file:src/View/Images/Wire.png");
+        ImageView newwire5 = new ImageView("file:src/View/Images/Wire.png");
+        ImageView newwire6 = new ImageView("file:src/View/Images/Wire.png");
+        ImageView newwire7 = new ImageView("file:src/View/Images/Wire.png");
+
+        if (btnCount2 == 1) {
+            newcircuitSplit.setLayoutX( 125 );
+            newcircuitSplit.setLayoutY( -5 );
+            newCapacitor.setLayoutX( 225 );
+            newCapacitor.setLayoutY( -33);
+            newCapacitor2.setLayoutX( 225 );
+            newCapacitor2.setLayoutY( 25);
+            cc_pane.getChildren().addAll(newcircuitSplit, newCapacitor, newCapacitor2);
+            calcCircuitcustom2[counter2] = new CircuitSplit(0,0);
+                calcCircuitcustom2[counter2+1] = new Capacitor(Double.parseDouble(((TextField)ccvbs.get(counter1-1).getChildren().get(2)).getText()), 0, 0);
+                calcCircuitcustom2[counter2+2] = new Capacitor(Double.parseDouble(((TextField)ccvbs.get(counter1-1).getChildren().get(2)).getText()), 0, 0);
+
+        }
+        else if (btnCount2 == 2) {
+            newwire3.setLayoutX(220);
+            newwire3.setLayoutY(-5);
+
+            newcircuitSplit.setLayoutX(285);
+            newcircuitSplit.setLayoutY(-5);
+            newCapacitor.setLayoutX( 385 );
+            newCapacitor.setLayoutY( -33);
+
+            newCapacitor2.setLayoutX( 385 );
+            newCapacitor2.setLayoutY( 25);
+            newcornerp1.setLayoutX(475);
+            newcornerp1.setLayoutY(70);
+
+            newwire1.setLayoutX(485);
+            newwire1.setLayoutY(-33);
+
+            newcornerp2.setLayoutX(570);
+            newcornerp2.setLayoutY(-8);
+
+            newwire2.setLayoutX(545);
+            newwire2.setLayoutY(28);
+
+            newwire2.setRotate(90);
+            cc_pane.getChildren().addAll(newwire3, newcircuitSplit, newCapacitor, newCapacitor2, newwire1, newwire2, newcornerp1, newcornerp2);
+            calcCircuitcustom2[counter2] = new CircuitSplit(0,0);
+                calcCircuitcustom2[counter2+1] = new Capacitor(Double.parseDouble(((TextField)ccvbs.get(counter1-1).getChildren().get(2)).getText()), 0, 0);
+                calcCircuitcustom2[counter2+2] = new Capacitor(Double.parseDouble(((TextField)ccvbs.get(counter1-1).getChildren().get(2)).getText()), 0, 0);
+
+        }
+        else if (btnCount2 == 3) {
+            newcircuitSplit.setRotate(90);
+            newcircuitSplit.setLayoutX(525);
+            newcircuitSplit.setLayoutY(65);
+            newwire1.setRotate(90);
+            newwire2.setRotate(90);
+            newwire3.setRotate(90);
+            newwire4.setRotate(90);
+            newCapacitor.setRotate(90);
+            newCapacitor2.setRotate(90);
+            newcornerp1.setRotate(90);
+            newcornerp2.setRotate(90);
+            newwire1.setLayoutX(495);
+            newwire1.setLayoutY(125);
+            newwire2.setLayoutX(553);
+            newwire2.setLayoutY(125);
+            newCapacitor.setLayoutX(495);
+            newCapacitor.setLayoutY(225);
+            newCapacitor2.setLayoutX(553);
+            newCapacitor2.setLayoutY(225);
+            newwire4.setLayoutX(495);
+            newwire4.setLayoutY(300);
+            newwire3.setLayoutX(553);
+            newwire3.setLayoutY(325);
+            newcornerp1.setLayoutX(550);
+            newcornerp1.setLayoutY(425);
+            newcornerp2.setLayoutX(520);
+            newcornerp2.setLayoutY(393);
+            newwire5.setLayoutX(508);
+            newwire5.setLayoutY(428);
+            newwire6.setLayoutX(480);
+            newwire6.setLayoutY(428);
+            newwire7.setLayoutX(450);
+            newwire7.setLayoutY(368);
+
+            cc_pane.getChildren().addAll(newcircuitSplit, newwire1, newwire2, newCapacitor, newCapacitor2,  newwire3, newwire4, newcornerp1, newcornerp2, newwire5, newwire6, newwire7);
+        calcCircuitcustom2[counter2] = new CircuitSplit(0,0);
+                calcCircuitcustom2[counter2+1] = new Capacitor(Double.parseDouble(((TextField)ccvbs.get(counter1-1).getChildren().get(2)).getText()), 0, 0);
+                calcCircuitcustom2[counter2+2] = new Capacitor(Double.parseDouble(((TextField)ccvbs.get(counter1-1).getChildren().get(2)).getText()), 0, 0);
+
         
-        
+        }
+        else if (btnCount2 == 4) {
+            newcircuitSplit.setRotate(180);
+            newcircuitSplit.setLayoutX(453);
+            newcircuitSplit.setLayoutY(405);
+            newCapacitor.setLayoutX(353);
+            newCapacitor.setLayoutY(375);
+            newCapacitor2.setLayoutX(353);
+            newCapacitor2.setLayoutY(433);
+            newwire1.setLayoutX(280);
+            newwire1.setLayoutY(370);
+            newwire2.setLayoutX(280);
+            newwire2.setLayoutY(430);
+            cc_pane.getChildren().addAll(newcircuitSplit, newCapacitor, newCapacitor2, newwire1, newwire2);
+       calcCircuitcustom2[counter2] = new CircuitSplit(0,0);
+                calcCircuitcustom2[counter2+1] = new Capacitor(Double.parseDouble(((TextField)ccvbs.get(counter1-1).getChildren().get(2)).getText()), 0, 0);
+                calcCircuitcustom2[counter2+2] = new Capacitor(Double.parseDouble(((TextField)ccvbs.get(counter1-1).getChildren().get(2)).getText()), 0, 0);
+
+        }
+
+    }
+}
+        else {
+            Label lbl = new Label("unable to add anymore components");
+            ccSidebarVbox.getChildren().add(9, lbl);
+        }
     }
     
     /**
@@ -614,9 +1992,14 @@ public class ElectricalCircuitSimulationFXMLController implements Initializable 
 
     @FXML
     private void rcCalcBtnPressed(ActionEvent event) {
+        calcResistance(calcCircuitcustom1, calcCircuitcustom1.length, 0, false, 0, 0);
+        for(int i = 0; i < counter1;i++) {
+          if (calcCircuitcustom1[i] instanceof Resistor) {
+            ((Label)rcvbs.get(i).getChildren().get(3)).setText("Voltage: " + calcCircuitcustom1[i].getVoltage());
+            ((Label)rcvbs.get(i).getChildren().get(4)).setText("Current: " + ((Resistor)calcCircuitcustom1[i]).getCurrent());
+        }  
+        }
         
-        String str = ((TextField)rcvbs.get(0).getChildren().get(2)).getText();
-        ((Label)rcvbs.get(0).getChildren().get(3)).setText(str);
     }
     @FXML
     private void rcClearBtnPressed(ActionEvent event) {
@@ -624,21 +2007,27 @@ public class ElectricalCircuitSimulationFXMLController implements Initializable 
         b5_slider.setValue(0);
         for(int i = 0; i < counter1;i++) {
             ((TextField)rcvbs.get(i).getChildren().get(2)).setText("10.00");
-        }
         
         
+    }
     }
 
     @FXML
     private void ccCalcBtnPressed(ActionEvent event) {
-      
+        calcCapacitance(calcCircuitcustom2, calcCircuitcustom1.length, 0, false, 0, 0);
+      for(int i = 0; i < counter2;i++) {
+          if (calcCircuitcustom2[i] instanceof Capacitor) {
+            ((Label)ccvbs.get(i).getChildren().get(3)).setText("Voltage: " + calcCircuitcustom2[i].getVoltage());
+            ((Label)ccvbs.get(i).getChildren().get(4)).setText("Charge: " + ((Capacitor)calcCircuitcustom2[i]).getCharge());
+        }  
+        }
     }
 
     @FXML
     private void ccClearBtnPrssed(ActionEvent event) {
         b6_tf.setText("10.00");
         b6_slider.setValue(0);
-        for(int i = 0; i < counter1;i++) {
+        for(int i = 0; i < counter2;i++) {
             ((TextField)ccvbs.get(i).getChildren().get(2)).setText("10.00");
     }
     }
@@ -803,6 +2192,6 @@ public class ElectricalCircuitSimulationFXMLController implements Initializable 
                 ((Resistor)calcCircuit[circuitSize - 1]).setVoltage(((Resistor)calcCircuit[circuitSize - 1]).getCurrent() * ((Resistor) calcCircuit[circuitSize - 1]).getResistance());
             }
         }
-    }   
-
+    }
+    
 }

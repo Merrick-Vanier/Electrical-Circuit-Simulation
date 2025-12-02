@@ -31,4 +31,8 @@ public class Capacitor extends CircuitElement {
    public double getCapacitance() {
        return capacitance;
    }
+
+    public String getCurrent() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }
