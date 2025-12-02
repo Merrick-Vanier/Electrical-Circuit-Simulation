@@ -216,16 +216,16 @@ public class ElectricalCircuitSimulationFXMLControllerTest {
         };
         ElectricalCircuitSimulationFXMLController instance = new ElectricalCircuitSimulationFXMLController();
         instance.calcResistance(calcCircuit, calcCircuit.length, 0, false, 0, 0);
-//        assertEquals(2.50, ((Resistor)calcCircuit[2]).getCurrent(), 0.01);
-//        assertEquals(8, ((Resistor)calcCircuit[2]).getResistance(), 0.01);
-//        assertEquals(20, ((Resistor)calcCircuit[2]).getVoltage(), 0.01);
-//        assertEquals(2.50, ((Resistor)calcCircuit[3]).getCurrent(), 0.01);
-//        assertEquals(4, ((Resistor)calcCircuit[3]).getResistance(), 0.01);
-//        assertEquals(10, ((Resistor)calcCircuit[3]).getVoltage(), 0.01);
-//        assertEquals(3.75, ((Resistor)calcCircuit[5]).getCurrent(), 0.01);
-//        assertEquals(4, ((Resistor)calcCircuit[5]).getResistance(), 0.01);
-//        assertEquals(15, ((Resistor)calcCircuit[5]).getVoltage(), 0.01);
-//        assertEquals(3.75, ((Resistor)calcCircuit[6]).getCurrent(), 0.01);
+        assertEquals(2.50, ((Resistor)calcCircuit[2]).getCurrent(), 0.01);
+        assertEquals(8, ((Resistor)calcCircuit[2]).getResistance(), 0.01);
+        assertEquals(20, ((Resistor)calcCircuit[2]).getVoltage(), 0.01);
+        assertEquals(2.50, ((Resistor)calcCircuit[3]).getCurrent(), 0.01);
+        assertEquals(4, ((Resistor)calcCircuit[3]).getResistance(), 0.01);
+        assertEquals(10, ((Resistor)calcCircuit[3]).getVoltage(), 0.01);
+        assertEquals(3.75, ((Resistor)calcCircuit[5]).getCurrent(), 0.01);
+        assertEquals(4, ((Resistor)calcCircuit[5]).getResistance(), 0.01);
+        assertEquals(15, ((Resistor)calcCircuit[5]).getVoltage(), 0.01);
+        assertEquals(3.75, ((Resistor)calcCircuit[6]).getCurrent(), 0.01);
         assertEquals(4, ((Resistor)calcCircuit[6]).getResistance(), 0.01);
         assertEquals(15, ((Resistor)calcCircuit[6]).getVoltage(), 0.01);
         
