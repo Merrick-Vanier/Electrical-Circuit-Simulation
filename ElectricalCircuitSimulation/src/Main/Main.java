@@ -29,7 +29,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws IOException {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/ElectricalCircuitSimulationFXML.fxml"));
             Scene s = new Scene(loader.load());
-            primaryStage.setTitle("Marathon Simulator");
+            primaryStage.setTitle("Electric Circuit Simulator");
             primaryStage.setScene(s);
             primaryStage.show();
     }
