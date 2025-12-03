@@ -5,8 +5,8 @@
 package Model;
 
 /**
- *
- * @author 6237800
+ * Class CircuitSplit to represent a circuitSplit in a circuit
+ * @author Merrick 6237800
  */
 public class CircuitSplit extends CircuitElement {
     double total;

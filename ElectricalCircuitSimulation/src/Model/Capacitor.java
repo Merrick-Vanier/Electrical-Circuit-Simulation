@@ -5,8 +5,8 @@
 package Model;
 
 /**
- *
- * @author CoolHandLuke
+ * Class Capacitor to represent a capacitor in a circuit
+ * @author Merrick 6237800
  */
 public class Capacitor extends CircuitElement {
    private double capacitance;

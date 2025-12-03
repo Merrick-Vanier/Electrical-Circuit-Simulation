@@ -315,7 +315,7 @@ public class ElectricalCircuitSimulationFXMLController implements Initializable 
         CircuitElement[] calcCircuit = {
             new Battery(Double.parseDouble(b1_tf.getText())),
             new Resistor(Double.parseDouble(rs_R1_tf.getText()), 0, 0),
-            new Resistor(Double.parseDouble(rs_R2_tf.getText()), 0, 0),
+            new Resistor(Double.parseDouble(rs_R2_tf.getText()), 0, 0)
         };
         calcResistance(calcCircuit, calcCircuit.length, 0, false, 0, 0);
         rs_R1_V.setText("Voltage: " + calcCircuit[1].getVoltage());
@@ -335,34 +335,15 @@ public class ElectricalCircuitSimulationFXMLController implements Initializable 
             new Battery(Double.parseDouble(b2_tf.getText())),
             new CircuitSplit(0,0),
             new Resistor(Double.parseDouble(rp_R1_tf.getText()), 0, 0),
-            new Resistor(Double.parseDouble(rp_R2_tf.getText()), 0, 0),
             new CircuitSplit(0,0),
+            new Resistor(Double.parseDouble(rp_R2_tf.getText()), 0, 0),
+            new CircuitSplit(0,0)
         };
         calcResistance(calcCircuit, calcCircuit.length, 0, false, 0, 0);
-        rp_R1_V.setText("Voltage: " + calcCircuit[1].getVoltage());
-        rp_R1_C.setText("Current: " + ((Resistor)calcCircuit[1]).getCurrent());
-        rp_R2_V.setText("Voltage: " + calcCircuit[2].getVoltage());
-        rp_R2_C.setText("Current: " + ((Resistor)calcCircuit[2]).getCurrent());
-        
-    
-    }
-    
-    /**
-     * enters the calculated voltage and charge into tab 3
-     * @param event 
-     */
-    @FXML
-    private void cpCalcBtnPressed(ActionEvent event) {
-        CircuitElement[] calcCircuit = {
-            new Battery(Double.parseDouble(b3_tf.getText())),
-            new Capacitor(Double.parseDouble(cs_C1_tf.getText()), 0, 0),
-            new Capacitor(Double.parseDouble(cs_C2_tf.getText()), 0, 0),
-        };
-        calcCapacitance(calcCircuit, calcCircuit.length, 0, false, 0, 0);
-        cs_C1_V.setText("Voltage: " + calcCircuit[1].getVoltage());
-        cs_C1_C.setText("Charge: " + ((Capacitor)calcCircuit[1]).getCurrent());
-        cs_C2_V.setText("Voltage: " + calcCircuit[2].getVoltage());
-        cs_C2_C.setText("Charge: " + ((Capacitor)calcCircuit[2]).getCurrent());
+        rp_R1_V.setText("Voltage: " + calcCircuit[2].getVoltage());
+        rp_R1_C.setText("Current: " + ((Resistor)calcCircuit[2]).getCurrent());
+        rp_R2_V.setText("Voltage: " + calcCircuit[4].getVoltage());
+        rp_R2_C.setText("Current: " + ((Resistor)calcCircuit[4]).getCurrent());
         
     
     }
@@ -372,19 +353,39 @@ public class ElectricalCircuitSimulationFXMLController implements Initializable 
      * @param event 
      */
     @FXML
-    private void csCalcBtnPressed(ActionEvent event) {
+    private void cpCalcBtnPressed(ActionEvent event) {
         CircuitElement[] calcCircuit = {
             new Battery(Double.parseDouble(b4_tf.getText())),
             new CircuitSplit(0,0),
             new Capacitor(Double.parseDouble(cp_C1_tf.getText()), 0, 0),
-            new Capacitor(Double.parseDouble(cp_C2_tf.getText()), 0, 0),
             new CircuitSplit(0,0),
+            new Capacitor(Double.parseDouble(cp_C2_tf.getText()), 0, 0),
+            new CircuitSplit(0,0)
         };
         calcCapacitance(calcCircuit, calcCircuit.length, 0, false, 0, 0);
-        cp_C1_V.setText("Voltage: " + calcCircuit[1].getVoltage());
-        cp_C1_C.setText("Charge: " + ((Capacitor)calcCircuit[1]).getCharge());
-        cp_C2_V.setText("Voltage: " + calcCircuit[2].getVoltage());
-        cp_C2_C.setText("Charge: " + ((Capacitor)calcCircuit[2]).getCharge());
+        cp_C1_V.setText("Voltage: " + calcCircuit[2].getVoltage());
+        cp_C1_C.setText("Charge: " + ((Capacitor)calcCircuit[2]).getCharge());
+        cp_C2_V.setText("Voltage: " + calcCircuit[4].getVoltage());
+        cp_C2_C.setText("Charge: " + ((Capacitor)calcCircuit[4]).getCharge());
+        
+    }
+    
+    /**
+     * enters the calculated voltage and charge into tab 3
+     * @param event 
+     */
+    @FXML
+    private void csCalcBtnPressed(ActionEvent event) {
+        CircuitElement[] calcCircuit = {
+            new Battery(Double.parseDouble(b3_tf.getText())),
+            new Capacitor(Double.parseDouble(cs_C1_tf.getText()), 0, 0),
+            new Capacitor(Double.parseDouble(cs_C2_tf.getText()), 0, 0)
+        };
+        calcCapacitance(calcCircuit, calcCircuit.length, 0, false, 0, 0);
+        cs_C1_V.setText("Voltage: " + calcCircuit[1].getVoltage());
+        cs_C1_C.setText("Charge: " + ((Capacitor)calcCircuit[1]).getCurrent());
+        cs_C2_V.setText("Voltage: " + calcCircuit[2].getVoltage());
+        cs_C2_C.setText("Charge: " + ((Capacitor)calcCircuit[2]).getCurrent());
         
     }
     
