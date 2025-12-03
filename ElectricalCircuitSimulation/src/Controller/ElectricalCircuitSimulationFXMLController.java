@@ -650,7 +650,7 @@ public class ElectricalCircuitSimulationFXMLController implements Initializable 
     rcSidebarVbox.getChildren().add(10 + counter1 + 1, copy2);
 
     rcvbs.add(copy1);
-    rcvbs.add(copy2);
+    rcvbs.addLast(copy2);
     btnCount++;
     counter1 += 2;
     ImageView newResistor = new ImageView("file:src/View/Images/Resistor.png");
@@ -1080,7 +1080,7 @@ public class ElectricalCircuitSimulationFXMLController implements Initializable 
     rcSidebarVbox.getChildren().add(10 + counter1 + 1, copy2);
 
     rcvbs.add(copy1);
-    rcvbs.add(copy2);
+    rcvbs.addLast(copy2);
 
     counter1 += 2;
     btnCount ++;
@@ -1112,13 +1112,15 @@ public class ElectricalCircuitSimulationFXMLController implements Initializable 
     newResistor2.setLayoutY( 25); 
     rc_pane.getChildren().addAll(newcircuitSplit, newResistor, newResistor2);
     calcCircuitcustom1[circuitCount1] = new CircuitSplit(0,0);
-    circuitCount1++;
+       circuitCount1++;
       
     
-    calcCircuitcustom1[circuitCount1] = new Resistor(0, 0, 0);
-    circuitCount1++;
-    calcCircuitcustom1[circuitCount1] = new Resistor(0, 0, 0);
-    circuitCount1++;
+       calcCircuitcustom1[circuitCount1] = new Resistor(0, 0, 0);
+       circuitCount1++;
+       calcCircuitcustom1[circuitCount1] = new CircuitSplit(0,0);
+       circuitCount1++;
+       calcCircuitcustom1[circuitCount1] = new Resistor(0, 0, 0);
+       circuitCount1++;
 
     }
     else if (btnCount == 2) {
@@ -1147,13 +1149,15 @@ public class ElectricalCircuitSimulationFXMLController implements Initializable 
         newwire2.setRotate(90);
         rc_pane.getChildren().addAll(newwire3, newcircuitSplit, newResistor, newResistor2, newwire1, newwire2, newcornerp1, newcornerp2);
         calcCircuitcustom1[circuitCount1] = new CircuitSplit(0,0);
-    circuitCount1++;
+       circuitCount1++;
       
     
-    calcCircuitcustom1[circuitCount1] = new Resistor(0, 0, 0);
-    circuitCount1++;
-    calcCircuitcustom1[circuitCount1] = new Resistor(0, 0, 0);
-    circuitCount1++;
+       calcCircuitcustom1[circuitCount1] = new Resistor(0, 0, 0);
+       circuitCount1++;
+       calcCircuitcustom1[circuitCount1] = new CircuitSplit(0,0);
+       circuitCount1++;
+       calcCircuitcustom1[circuitCount1] = new Resistor(0, 0, 0);
+       circuitCount1++;
     
     }
     else if (btnCount == 3) {
@@ -1194,13 +1198,15 @@ public class ElectricalCircuitSimulationFXMLController implements Initializable 
        
         rc_pane.getChildren().addAll(newcircuitSplit, newwire1, newwire2, newResistor, newResistor2,  newwire3, newwire4, newcornerp1, newcornerp2, newwire5, newwire6, newwire7);
         calcCircuitcustom1[circuitCount1] = new CircuitSplit(0,0);
-    circuitCount1++;
+       circuitCount1++;
       
     
-    calcCircuitcustom1[circuitCount1] = new Resistor(0, 0, 0);
-    circuitCount1++;
-    calcCircuitcustom1[circuitCount1] = new Resistor(0, 0, 0);
-    circuitCount1++;
+       calcCircuitcustom1[circuitCount1] = new Resistor(0, 0, 0);
+       circuitCount1++;
+       calcCircuitcustom1[circuitCount1] = new CircuitSplit(0,0);
+       circuitCount1++;
+       calcCircuitcustom1[circuitCount1] = new Resistor(0, 0, 0);
+       circuitCount1++;
     }
     else if (btnCount == 4) {
         newcircuitSplit.setRotate(180);
@@ -1220,6 +1226,8 @@ public class ElectricalCircuitSimulationFXMLController implements Initializable 
       
     
        calcCircuitcustom1[circuitCount1] = new Resistor(0, 0, 0);
+       circuitCount1++;
+       calcCircuitcustom1[circuitCount1] = new CircuitSplit(0,0);
        circuitCount1++;
        calcCircuitcustom1[circuitCount1] = new Resistor(0, 0, 0);
        circuitCount1++;
@@ -1881,6 +1889,8 @@ public class ElectricalCircuitSimulationFXMLController implements Initializable 
                 circuitCount2++;
                 calcCircuitcustom2[circuitCount2] = new Capacitor(0, 0, 0);
                 circuitCount2++;
+                calcCircuitcustom2[circuitCount2] = new CircuitSplit(0,0);
+                circuitCount2++;
                 calcCircuitcustom2[circuitCount2] = new Capacitor(0, 0, 0);
  
                 circuitCount2++;
@@ -1913,6 +1923,8 @@ public class ElectricalCircuitSimulationFXMLController implements Initializable 
             calcCircuitcustom2[circuitCount2] = new CircuitSplit(0,0);
                 circuitCount2++;
                 calcCircuitcustom2[circuitCount2] = new Capacitor(0, 0, 0);
+                circuitCount2++;
+                calcCircuitcustom2[circuitCount2] = new CircuitSplit(0,0);
                 circuitCount2++;
                 calcCircuitcustom2[circuitCount2] = new Capacitor(0, 0, 0);
  
@@ -1954,9 +1966,11 @@ public class ElectricalCircuitSimulationFXMLController implements Initializable 
             newwire7.setLayoutY(368);
 
             cc_pane.getChildren().addAll(newcircuitSplit, newwire1, newwire2, newCapacitor, newCapacitor2,  newwire3, newwire4, newcornerp1, newcornerp2, newwire5, newwire6, newwire7);
-        calcCircuitcustom2[circuitCount2] = new CircuitSplit(0,0);
+               calcCircuitcustom2[circuitCount2] = new CircuitSplit(0,0);
                 circuitCount2++;
                 calcCircuitcustom2[circuitCount2] = new Capacitor(0, 0, 0);
+                circuitCount2++;
+                calcCircuitcustom2[circuitCount2] = new CircuitSplit(0,0);
                 circuitCount2++;
                 calcCircuitcustom2[circuitCount2] = new Capacitor(0, 0, 0);
  
@@ -1976,9 +1990,11 @@ public class ElectricalCircuitSimulationFXMLController implements Initializable 
             newwire2.setLayoutX(280);
             newwire2.setLayoutY(430);
             cc_pane.getChildren().addAll(newcircuitSplit, newCapacitor, newCapacitor2, newwire1, newwire2);
-       calcCircuitcustom2[circuitCount2] = new CircuitSplit(0,0);
+                calcCircuitcustom2[circuitCount2] = new CircuitSplit(0,0);
                 circuitCount2++;
                 calcCircuitcustom2[circuitCount2] = new Capacitor(0, 0, 0);
+                circuitCount2++;
+                calcCircuitcustom2[circuitCount2] = new CircuitSplit(0,0);
                 circuitCount2++;
                 calcCircuitcustom2[circuitCount2] = new Capacitor(0, 0, 0);
  
@@ -2047,11 +2063,18 @@ public class ElectricalCircuitSimulationFXMLController implements Initializable 
         }
         
         calcResistance(calcCircuitcustom1, calcCircuitcustom1.length, 0, false, 0, 0);
-        for(int i = 0; i < counter1;i++) {
+        int counter2 = 0;
+        System.out.println(rcvbs.size());
+        for(int i = 1; i < counter1 + 1 ;i++) {
           if (calcCircuitcustom1[i] instanceof Resistor) {
-            ((Label)rcvbs.get(i).getChildren().get(3)).setText("Voltage (V): " + calcCircuitcustom1[i].getVoltage());
-            ((Label)rcvbs.get(i).getChildren().get(4)).setText("Current (A): " + ((Resistor)calcCircuitcustom1[i]).getCurrent());
-        }  
+             
+            ((Label)rcvbs.get(counter2).getChildren().get(3)).setText("Voltage (V): " + calcCircuitcustom1[i].getVoltage());
+            ((Label)rcvbs.get(counter2).getChildren().get(4)).setText("Current (A): " + ((Resistor)calcCircuitcustom1[i]).getCurrent());
+             
+             
+          } 
+          
+          
         }
         
     }
