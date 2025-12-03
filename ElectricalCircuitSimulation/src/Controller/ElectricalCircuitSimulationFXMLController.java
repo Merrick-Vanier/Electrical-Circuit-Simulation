@@ -39,11 +39,7 @@ public class ElectricalCircuitSimulationFXMLController implements Initializable 
     private Label helpText;
 
     
-    CircuitElement[] circuit1 = {
-        new Battery(15), 
-        new Resistor(15, 0, 0),
-        new Resistor(15, 0, 0)
-    };
+    
     @FXML
     private Slider b1_slider;
     @FXML
