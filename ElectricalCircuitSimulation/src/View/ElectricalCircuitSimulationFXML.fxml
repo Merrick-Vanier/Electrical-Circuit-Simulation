@@ -20,6 +20,62 @@
 
 <TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ElectricalCircuitSimulationFXMLController">
    <tabs>
+      <Tab text="Help">
+         <content>
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <Label fx:id="helpText" layoutX="16.0" layoutY="276.0" text="Formuals Used:" />
+                  <Label layoutX="16.0" layoutY="303.0" text="Ohms Law: V =  IR, Q = CV" />
+                  <Label layoutX="14.0" layoutY="6.0" text="Functonallity:" />
+                  <Label layoutX="14.0" layoutY="31.0" text="Enter the desired values for the desired component." />
+                  <Label layoutX="14.0" layoutY="56.0" text="Enter it in either the Slider or the Textfield" />
+                  <Label layoutX="14.0" layoutY="79.0" text="The Slider updates the TextField and vice versa" />
+                  <Label layoutX="14.0" layoutY="104.0" text="Press the Caclulate button when ready or press the Clear button to clear all values" />
+                  <Label layoutX="14.0" layoutY="140.0" text="Custom Functionallity:" />
+                  <Label layoutX="14.0" layoutY="164.0" text="Add a component to the circuit by choosing the desired component from the ComboBox and press the Add button" />
+                  <Label layoutX="14.0" layoutY="190.0" text="Enter all the desired values for each component" />
+                  <Label layoutX="14.0" layoutY="217.0" />
+                  <Label layoutX="14.0" layoutY="217.0" text="Press the Caclulate button when ready or press the Clear button to clear all values" />
+                  <Line endX="786.5" layoutX="108.0" layoutY="255.0" startX="-100.0" />
+                  <Line endX="699.0" layoutX="101.0" layoutY="129.0" startX="-100.0" />
+                  <Line endX="7.5" endY="241.5" layoutX="259.0" layoutY="320.0" startX="7.5" startY="-64.5" />
+                  <Label layoutX="278.0" layoutY="268.0" text="Legend" />
+                  <Label layoutX="285.0" layoutY="334.0" text="Battery:" />
+                  <Label layoutX="278.0" layoutY="470.0" text="Capacitor:" />
+                  <Label layoutX="536.0" layoutY="343.0" text="Resistor:" />
+                  <Label layoutX="583.0" layoutY="419.0" text="Spilt Branch and End Branch:" />
+                  <ImageView fitHeight="119.0" fitWidth="63.0" layoutX="348.0" layoutY="292.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@Images/Battery.png" />
+                     </image>
+                  </ImageView>
+                  <Line endX="429.0" layoutX="371.0" layoutY="292.0" startX="-105.0" />
+                  <Line endX="429.0" layoutX="371.0" layoutY="416.0" startX="-105.0" />
+                  <Line endX="26.5" endY="225.5" layoutX="490.0" layoutY="343.0" startX="26.5" startY="-50.5" />
+                  <ImageView fitHeight="103.0" fitWidth="107.0" layoutX="363.0" layoutY="427.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@Images/Capacitor.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="98.0" fitWidth="106.0" layoutX="619.0" layoutY="303.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@Images/Resistor.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="77.0" fitWidth="76.0" layoutX="545.0" layoutY="449.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@Images/CircuitSplit.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="77.0" fitWidth="76.0" layoutX="679.0" layoutY="449.0" pickOnBounds="true" preserveRatio="true" rotate="180.0">
+                     <image>
+                        <Image url="@Images/CircuitSplit.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </AnchorPane>
+         </content>
+      </Tab>
       <Tab text="Resistors in series">
          <content>
             <BorderPane>
@@ -563,62 +619,6 @@
                   <Pane fx:id="cc_pane" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
                </left>
             </BorderPane>
-         </content>
-      </Tab>
-      <Tab text="Help">
-         <content>
-            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-               <children>
-                  <Label fx:id="helpText" layoutX="16.0" layoutY="276.0" text="Formuals Used:" />
-                  <Label layoutX="16.0" layoutY="303.0" text="Ohms Law: V =  IR, Q = CV" />
-                  <Label layoutX="14.0" layoutY="6.0" text="Functonallity:" />
-                  <Label layoutX="14.0" layoutY="31.0" text="Enter the desired values for the desired component." />
-                  <Label layoutX="14.0" layoutY="56.0" text="Enter it in either the Slider or the Textfield" />
-                  <Label layoutX="14.0" layoutY="79.0" text="The Slider updates the TextField and vice versa" />
-                  <Label layoutX="14.0" layoutY="104.0" text="Press the Caclulate button when ready or press the Clear button to clear all values" />
-                  <Label layoutX="14.0" layoutY="140.0" text="Custom Functionallity:" />
-                  <Label layoutX="14.0" layoutY="164.0" text="Add a component to the circuit by choosing the desired component from the ComboBox and press the Add button" />
-                  <Label layoutX="14.0" layoutY="190.0" text="Enter all the desired values for each component" />
-                  <Label layoutX="14.0" layoutY="217.0" />
-                  <Label layoutX="14.0" layoutY="217.0" text="Press the Caclulate button when ready or press the Clear button to clear all values" />
-                  <Line endX="786.5" layoutX="108.0" layoutY="255.0" startX="-100.0" />
-                  <Line endX="699.0" layoutX="101.0" layoutY="129.0" startX="-100.0" />
-                  <Line endX="7.5" endY="241.5" layoutX="259.0" layoutY="320.0" startX="7.5" startY="-64.5" />
-                  <Label layoutX="278.0" layoutY="268.0" text="Legend" />
-                  <Label layoutX="285.0" layoutY="334.0" text="Battery:" />
-                  <Label layoutX="278.0" layoutY="470.0" text="Capacitor:" />
-                  <Label layoutX="536.0" layoutY="343.0" text="Resistor:" />
-                  <Label layoutX="583.0" layoutY="419.0" text="Spilt Branch and End Branch:" />
-                  <ImageView fitHeight="119.0" fitWidth="63.0" layoutX="348.0" layoutY="292.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@Images/Battery.png" />
-                     </image>
-                  </ImageView>
-                  <Line endX="429.0" layoutX="371.0" layoutY="292.0" startX="-105.0" />
-                  <Line endX="429.0" layoutX="371.0" layoutY="416.0" startX="-105.0" />
-                  <Line endX="26.5" endY="225.5" layoutX="490.0" layoutY="343.0" startX="26.5" startY="-50.5" />
-                  <ImageView fitHeight="103.0" fitWidth="107.0" layoutX="363.0" layoutY="427.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@Images/Capacitor.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="98.0" fitWidth="106.0" layoutX="619.0" layoutY="303.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@Images/Resistor.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="77.0" fitWidth="76.0" layoutX="545.0" layoutY="449.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@Images/CircuitSplit.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="77.0" fitWidth="76.0" layoutX="679.0" layoutY="449.0" pickOnBounds="true" preserveRatio="true" rotate="180.0">
-                     <image>
-                        <Image url="@Images/CircuitSplit.png" />
-                     </image>
-                  </ImageView>
-               </children>
-            </AnchorPane>
          </content>
       </Tab>
    </tabs>
