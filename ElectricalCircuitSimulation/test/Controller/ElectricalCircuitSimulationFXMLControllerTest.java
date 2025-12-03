@@ -5,6 +5,7 @@
 package Controller;
 
 import Model.Battery;
+import Model.Capacitor;
 import Model.CircuitElement;
 import Model.CircuitSplit;
 import Model.Resistor;
@@ -18,8 +19,8 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- *
- * @author merri
+ * Test cases for calcResistance and calcCapacitance methods in ElectricalCircuitSimulationFXMLController
+ * @author Merrick 6237800
  */
 public class ElectricalCircuitSimulationFXMLControllerTest {
     
@@ -228,6 +229,31 @@ public class ElectricalCircuitSimulationFXMLControllerTest {
         assertEquals(3.75, ((Resistor)calcCircuit[6]).getCurrent(), 0.01);
         assertEquals(4, ((Resistor)calcCircuit[6]).getResistance(), 0.01);
         assertEquals(15, ((Resistor)calcCircuit[6]).getVoltage(), 0.01);
+        
+    }
+     
+     /**
+     * Testing of calcCapacitance method with a circuit split
+     */
+    @Test
+     public void testCalcCapacitance1() {
+        System.out.println("Test1");
+        CircuitElement[] calcCircuit = {
+            new Battery(30),
+            new CircuitSplit(0, 0),
+            new Capacitor(12, 0, 0),
+            new CircuitSplit(0, 0),
+            new Capacitor(8, 0, 0),
+            new CircuitSplit(0, 0)
+        };
+        ElectricalCircuitSimulationFXMLController instance = new ElectricalCircuitSimulationFXMLController();
+        instance.calcCapacitance(calcCircuit, calcCircuit.length, 0, false, 0, 0);
+        assertEquals(360, ((Capacitor)calcCircuit[2]).getCharge(), 1);
+        assertEquals(12, ((Capacitor)calcCircuit[2]).getCapacitance(), 1);
+        assertEquals(30, ((Capacitor)calcCircuit[2]).getVoltage(), 1);
+        assertEquals(240, ((Capacitor)calcCircuit[4]).getCharge(), 1);
+        assertEquals(8, ((Capacitor)calcCircuit[4]).getCapacitance(), 1);
+        assertEquals(30, ((Capacitor)calcCircuit[4]).getVoltage(), 1);
         
     }
 }

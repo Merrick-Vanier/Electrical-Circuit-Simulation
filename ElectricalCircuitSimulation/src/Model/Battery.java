@@ -5,8 +5,8 @@
 package Model;
 
 /**
- *
- * @author merri
+ * Class Battery to represent a battery in a circuit
+ * @author Merrick 6237800
  */
 public class Battery extends CircuitElement {
     

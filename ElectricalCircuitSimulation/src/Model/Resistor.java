@@ -7,8 +7,8 @@ package Model;
 import java.util.Arrays;
 
 /**
- *
- * @author CoolHandLuke
+ * Class Resistor to represent a resistor in a circuit
+ * @author Merrick 6237800
  */
 public class Resistor extends CircuitElement {
     private double resistance;

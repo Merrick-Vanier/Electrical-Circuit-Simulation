@@ -5,8 +5,8 @@
 package Model;
 
 /**
- *
- * @author 6237800
+ * Class CircuitElement to represent a circuit element within a circuit
+ * @author Merrick 6237800
  */
 public abstract class CircuitElement {
     private double voltage;
