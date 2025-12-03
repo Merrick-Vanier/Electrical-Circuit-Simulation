@@ -28,23 +28,23 @@
                      <children>
                         <Label text="Resistors in Series" />
                         <Line endX="100.0" startX="-100.0" />
-                        <Label text="Battery Voltage:" />
+                        <Label text="Battery Voltage (V):" />
                         <Slider fx:id="b1_slider" min="10.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="20.0" />
                         <TextField fx:id="b1_tf" text="10.00" />
                         <Line endX="100.0" startX="-100.0" />
                         <Label text="Resistor #1 Values:" />
-                        <Label text="Resistance:" />
+                        <Label text=" Resistance (Ω):" />
                         <Slider fx:id="rs_R1_slider" min="10.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="20.0" />
                         <TextField fx:id="rs_R1_tf" text="10.00" />
-                        <Label fx:id="rs_R1_V" text="Voltage: 0" />
-                        <Label fx:id="rs_R1_C" text="Current: 0" />
+                        <Label fx:id="rs_R1_V" text="Voltage (V): 0" />
+                        <Label fx:id="rs_R1_C" text="Current (A): 0" />
                         <Line endX="100.0" startX="-100.0" />
                         <Label text="Resistor #2 Values:" />
-                        <Label text="Resistance" />
+                        <Label text=" Resistance (Ω):" />
                         <Slider fx:id="rs_R2_slider" min="10.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="20.0" />
                         <TextField fx:id="rs_R2_tf" text="10.00" />
-                        <Label fx:id="rs_R2_V" text="Voltage: 0" />
-                        <Label fx:id="rs_R2_C" text="Current: 0" />
+                        <Label fx:id="rs_R2_V" text="Voltage (V): 0" />
+                        <Label fx:id="rs_R2_C" text="Current (A): 0" />
                         <Line endX="100.0" startX="-100.0" />
                         <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                            <children>
@@ -134,23 +134,23 @@
                      <children>
                         <Label text="Resistors in Parallel" />
                         <Line endX="100.0" startX="-100.0" />
-                        <Label text="Battery Voltage:" />
+                        <Label text="Battery Voltage (V):" />
                         <Slider fx:id="b2_slider" min="10.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="20.0" />
                         <TextField fx:id="b2_tf" text="10.00" />
                         <Line endX="100.0" startX="-100.0" />
                         <Label text="Resistor #1 Values:" />
-                        <Label text="Resistance:" />
+                        <Label text=" Resistance (Ω):" />
                         <Slider fx:id="rp_R1_slider" min="10.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="20.0" />
                         <TextField fx:id="rp_R1_tf" text="10.00" />
-                        <Label fx:id="rp_R1_V" text="Voltage: 0" />
-                        <Label fx:id="rp_R1_C" text="Current: 0" />
+                        <Label fx:id="rp_R1_V" text="Voltage (V): 0" />
+                        <Label fx:id="rp_R1_C" text="Current (A): 0" />
                         <Line endX="100.0" startX="-100.0" />
                         <Label text="Resistor #2 Values:" />
-                        <Label text="Resistance" />
+                        <Label text=" Resistance (Ω):" />
                         <Slider fx:id="rp_R2_slider" min="10.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="20.0" />
                         <TextField fx:id="rp_R2_tf" text="10.00" />
-                        <Label fx:id="rp_R2_V" text="Voltage: 0" />
-                        <Label fx:id="rp_R2_C" text="Current: 0" />
+                        <Label fx:id="rp_R2_V" text="Voltage (V): 0" />
+                        <Label fx:id="rp_R2_C" text="Current (A): 0" />
                         <Line endX="100.0" startX="-100.0" />
                         <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                            <children>
@@ -240,23 +240,23 @@
                      <children>
                         <Label text="Capacitor in Series" />
                         <Line endX="100.0" startX="-100.0" />
-                        <Label text="Battery Voltage:" />
+                        <Label text="Battery Voltage (V):" />
                         <Slider fx:id="b3_slider" min="10.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="20.0" />
                         <TextField fx:id="b3_tf" text="10.00" />
                         <Line endX="100.0" startX="-100.0" />
                         <Label text="Capacitor #1 Values:" />
-                        <Label text="Capacitance" />
+                        <Label text="Capacitance (F):" />
                         <Slider fx:id="cs_C1_slider" min="10.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="20.0" />
                         <TextField fx:id="cs_C1_tf" text="10.00" />
-                        <Label fx:id="cs_C1_V" text="Voltage: 0" />
-                        <Label fx:id="cs_C1_C" text="Charge: 0" />
+                        <Label fx:id="cs_C1_V" text="Voltage (V): 0" />
+                        <Label fx:id="cs_C1_C" text="Charge (C): 0" />
                         <Line endX="100.0" startX="-100.0" />
                         <Label text="Capacitor #2 Values:" />
-                        <Label text="Capacitance" />
+                        <Label text="Capacitance (F):" />
                         <Slider fx:id="cs_C2_slider" min="10.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="20.0" />
                         <TextField fx:id="cs_C2_tf" text="10.00" />
-                        <Label fx:id="cs_C2_V" text="Voltage: 0" />
-                        <Label fx:id="cs_C2_C" text="Charge: 0" />
+                        <Label fx:id="cs_C2_V" text="Voltage (V): 0" />
+                        <Label fx:id="cs_C2_C" text="Charge (C): 0" />
                         <Line endX="100.0" startX="-100.0" />
                         <HBox prefHeight="100.0" prefWidth="200.0" spacing="5.0">
                            <children>
@@ -351,23 +351,23 @@
                      <children>
                         <Label text="Capacitor in Parallel" />
                         <Line endX="100.0" startX="-100.0" />
-                        <Label text="Battery Voltage:" />
+                        <Label text="Battery Voltage (V):" />
                         <Slider fx:id="b4_slider" min="10.0" showTickLabels="true" showTickMarks="true" value="20.0" />
                         <TextField fx:id="b4_tf" text="10.00" />
                         <Line endX="100.0" startX="-100.0" />
                         <Label text="Capacitor #1 Values:" />
-                        <Label text="Capacitance" />
+                        <Label text="Capacitance (F):" />
                         <Slider fx:id="cp_C1_slider" min="10.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="20.0" />
                         <TextField fx:id="cp_C1_tf" text="10.00" />
-                        <Label fx:id="cp_C1_V" text="Voltage: 0" />
-                        <Label fx:id="cp_C1_C" text="Charge: 0" />
+                        <Label fx:id="cp_C1_V" text="Voltage (V): 0" />
+                        <Label fx:id="cp_C1_C" text="Charge (C): 0" />
                         <Line endX="100.0" startX="-100.0" />
                         <Label text="Capacitor #2 Values:" />
-                        <Label text="Capacitance" />
+                        <Label text="Capacitance (F):" />
                         <Slider fx:id="cp_C2_slider" min="10.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="20.0" />
                         <TextField fx:id="cp_C2_tf" text="10.00" />
-                        <Label fx:id="cp_C2_V" text="Voltage: 0" />
-                        <Label fx:id="cp_C2_C" text="Charge: 0" />
+                        <Label fx:id="cp_C2_V" text="Voltage (V): 0" />
+                        <Label fx:id="cp_C2_C" text="Charge (C): 0" />
                         <Line endX="100.0" startX="-100.0" />
                         <HBox prefHeight="100.0" prefWidth="200.0" spacing="5.0">
                            <children>
@@ -470,7 +470,7 @@
                            <children>
                               <Label text="Resistors Custom" />
                               <Line endX="100.0" startX="-100.0" />
-                              <Label text="Battery Voltage:" />
+                              <Label text="Battery Voltage (V):" />
                               <Slider fx:id="b5_slider" min="10.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="20.0" />
                               <TextField fx:id="b5_tf" text="10.00" />
                               <Line endX="100.0" startX="-100.0" />
@@ -498,11 +498,11 @@
                               <VBox fx:id="resistorVbox" prefHeight="138.0" prefWidth="201.0" spacing="5.0" visible="false">
                                  <children>
                                     <Label prefHeight="17.0" prefWidth="114.0" text="Resistor #0 Values:" />
-                                    <Label text="Resistance:" />
+                                    <Label text=" Resistance (Ω):" />
                                     <Slider min="10.0" value="20.0" />
                                     <TextField />
-                                    <Label text="Voltage: 0" />
-                                    <Label text="Current: 0" />
+                                    <Label text="Voltage (V): 0" />
+                                    <Label text="Current (A): 0" />
                                     <Line endX="100.0" startX="-100.0" />
                                  </children>
                               </VBox>
@@ -527,7 +527,7 @@
                            <children>
                               <Label text="Capacitor in Parallel" />
                               <Line endX="100.0" startX="-100.0" />
-                              <Label text="Battery Voltage:" />
+                              <Label text="Battery Voltage (V):" />
                               <Slider fx:id="b6_slider" min="10.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="20.0" />
                               <TextField fx:id="b6_tf" text="10.00" />
                               <Line endX="100.0" startX="-100.0" />
@@ -547,10 +547,10 @@
                               <VBox fx:id="capacitorvb" prefHeight="200.0" prefWidth="100.0" spacing="5.0" visible="false">
                                  <children>
                                     <Label text="Capacitor #1 Values:" />
-                                    <Label text="Capacitance" />
+                                    <Label text="Capacitance (F):" />
                                     <TextField />
-                                    <Label text="Voltage: 0" />
-                                    <Label text="Charge: 0" />
+                                    <Label text="Voltage (V): 0" />
+                                    <Label text="Charge (C): 0" />
                                     <Line endX="100.0" startX="-100.0" />
                                  </children>
                               </VBox>
@@ -569,7 +569,54 @@
          <content>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <Label fx:id="helpText" layoutX="253.0" layoutY="158.0" text="Placeholder" />
+                  <Label fx:id="helpText" layoutX="16.0" layoutY="276.0" text="Formuals Used:" />
+                  <Label layoutX="16.0" layoutY="303.0" text="Ohms Law: V =  IR, Q = CV" />
+                  <Label layoutX="14.0" layoutY="6.0" text="Functonallity:" />
+                  <Label layoutX="14.0" layoutY="31.0" text="Enter the desired values for the desired component." />
+                  <Label layoutX="14.0" layoutY="56.0" text="Enter it in either the Slider or the Textfield" />
+                  <Label layoutX="14.0" layoutY="79.0" text="The Slider updates the TextField and vice versa" />
+                  <Label layoutX="14.0" layoutY="104.0" text="Press the Caclulate button when ready or press the Clear button to clear all values" />
+                  <Label layoutX="14.0" layoutY="140.0" text="Custom Functionallity:" />
+                  <Label layoutX="14.0" layoutY="164.0" text="Add a component to the circuit by choosing the desired component from the ComboBox and press the Add button" />
+                  <Label layoutX="14.0" layoutY="190.0" text="Enter all the desired values for each component" />
+                  <Label layoutX="14.0" layoutY="217.0" />
+                  <Label layoutX="14.0" layoutY="217.0" text="Press the Caclulate button when ready or press the Clear button to clear all values" />
+                  <Line endX="786.5" layoutX="108.0" layoutY="255.0" startX="-100.0" />
+                  <Line endX="699.0" layoutX="101.0" layoutY="129.0" startX="-100.0" />
+                  <Line endX="7.5" endY="241.5" layoutX="259.0" layoutY="320.0" startX="7.5" startY="-64.5" />
+                  <Label layoutX="278.0" layoutY="268.0" text="Legend" />
+                  <Label layoutX="285.0" layoutY="334.0" text="Battery:" />
+                  <Label layoutX="278.0" layoutY="470.0" text="Capacitor:" />
+                  <Label layoutX="536.0" layoutY="343.0" text="Resistor:" />
+                  <Label layoutX="583.0" layoutY="419.0" text="Spilt Branch and End Branch:" />
+                  <ImageView fitHeight="119.0" fitWidth="63.0" layoutX="348.0" layoutY="292.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@Images/Battery.png" />
+                     </image>
+                  </ImageView>
+                  <Line endX="429.0" layoutX="371.0" layoutY="292.0" startX="-105.0" />
+                  <Line endX="429.0" layoutX="371.0" layoutY="416.0" startX="-105.0" />
+                  <Line endX="26.5" endY="225.5" layoutX="490.0" layoutY="343.0" startX="26.5" startY="-50.5" />
+                  <ImageView fitHeight="103.0" fitWidth="107.0" layoutX="363.0" layoutY="427.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@Images/Capacitor.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="98.0" fitWidth="106.0" layoutX="619.0" layoutY="303.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@Images/Resistor.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="77.0" fitWidth="76.0" layoutX="545.0" layoutY="449.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@Images/CircuitSplit.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="77.0" fitWidth="76.0" layoutX="679.0" layoutY="449.0" pickOnBounds="true" preserveRatio="true" rotate="180.0">
+                     <image>
+                        <Image url="@Images/CircuitSplit.png" />
+                     </image>
+                  </ImageView>
                </children>
             </AnchorPane>
          </content>
