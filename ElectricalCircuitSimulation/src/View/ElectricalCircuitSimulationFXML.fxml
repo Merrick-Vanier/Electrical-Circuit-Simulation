@@ -245,18 +245,18 @@
                         <TextField fx:id="b3_tf" text="10.00" />
                         <Line endX="100.0" startX="-100.0" />
                         <Label text="Capacitor #1 Values:" />
-                        <Label text="Capacitance (F):" />
+                        <Label text="Capacitance (µF):" />
                         <Slider fx:id="cs_C1_slider" min="10.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="20.0" />
                         <TextField fx:id="cs_C1_tf" text="10.00" />
                         <Label fx:id="cs_C1_V" text="Voltage (V): 0" />
-                        <Label fx:id="cs_C1_C" text="Charge (C): 0" />
+                        <Label fx:id="cs_C1_C" text="Charge (µC): 0" />
                         <Line endX="100.0" startX="-100.0" />
                         <Label text="Capacitor #2 Values:" />
-                        <Label text="Capacitance (F):" />
+                        <Label text="Capacitance (µF):" />
                         <Slider fx:id="cs_C2_slider" min="10.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="20.0" />
                         <TextField fx:id="cs_C2_tf" text="10.00" />
                         <Label fx:id="cs_C2_V" text="Voltage (V): 0" />
-                        <Label fx:id="cs_C2_C" text="Charge (C): 0" />
+                        <Label fx:id="cs_C2_C" text="Charge (µC): 0" />
                         <Line endX="100.0" startX="-100.0" />
                         <HBox prefHeight="100.0" prefWidth="200.0" spacing="5.0">
                            <children>
@@ -356,18 +356,18 @@
                         <TextField fx:id="b4_tf" text="10.00" />
                         <Line endX="100.0" startX="-100.0" />
                         <Label text="Capacitor #1 Values:" />
-                        <Label text="Capacitance (F):" />
+                        <Label text="Capacitance (µF):" />
                         <Slider fx:id="cp_C1_slider" min="10.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="20.0" />
                         <TextField fx:id="cp_C1_tf" text="10.00" />
                         <Label fx:id="cp_C1_V" text="Voltage (V): 0" />
-                        <Label fx:id="cp_C1_C" text="Charge (C): 0" />
+                        <Label fx:id="cp_C1_C" text="Charge (µC): 0" />
                         <Line endX="100.0" startX="-100.0" />
                         <Label text="Capacitor #2 Values:" />
-                        <Label text="Capacitance (F):" />
+                        <Label text="Capacitance (µF):" />
                         <Slider fx:id="cp_C2_slider" min="10.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="20.0" />
                         <TextField fx:id="cp_C2_tf" text="10.00" />
                         <Label fx:id="cp_C2_V" text="Voltage (V): 0" />
-                        <Label fx:id="cp_C2_C" text="Charge (C): 0" />
+                        <Label fx:id="cp_C2_C" text="Charge (µC): 0" />
                         <Line endX="100.0" startX="-100.0" />
                         <HBox prefHeight="100.0" prefWidth="200.0" spacing="5.0">
                            <children>
@@ -547,10 +547,10 @@
                               <VBox fx:id="capacitorvb" prefHeight="200.0" prefWidth="100.0" spacing="5.0" visible="false">
                                  <children>
                                     <Label text="Capacitor #1 Values:" />
-                                    <Label text="Capacitance (F):" />
+                                    <Label text="Capacitance (µF):" />
                                     <TextField />
                                     <Label text="Voltage (V): 0" />
-                                    <Label text="Charge (C): 0" />
+                                    <Label text="Charge (µC): 0" />
                                     <Line endX="100.0" startX="-100.0" />
                                  </children>
                               </VBox>

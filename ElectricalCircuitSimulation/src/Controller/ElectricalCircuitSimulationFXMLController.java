@@ -268,10 +268,10 @@ public class ElectricalCircuitSimulationFXMLController implements Initializable 
         rs_R1_tf.setText("10.00");
         rs_R2_slider.setValue(20);
         rs_R2_tf.setText("10.00");
-        rs_R1_V.setText("Voltage: 0");
-        rs_R2_V.setText("Voltage: 0");
-        rs_R1_C.setText("Current: 0");
-        rs_R2_C.setText("Current: 0");
+        rs_R1_V.setText("Voltage (V): 0");
+        rs_R2_V.setText("Voltage (V): 0");
+        rs_R1_C.setText("Current (A): 0");
+        rs_R2_C.setText("Current (A): 0");
     }
 
 
@@ -291,10 +291,10 @@ public class ElectricalCircuitSimulationFXMLController implements Initializable 
         rp_R1_tf.setText("10.00");
         rp_R2_slider.setValue(20);
         rp_R2_tf.setText("10.00");
-        rp_R1_V.setText("Voltage: 0");
-        rp_R2_V.setText("Voltage: 0");
-        rp_R1_C.setText("Current: 0");
-        rp_R2_C.setText("Current: 0");
+        rp_R1_V.setText("Voltage (V): 0");
+        rp_R2_V.setText("Voltage (V): 0");
+        rp_R1_C.setText("Current (A): 0");
+        rp_R2_C.setText("Current (A): 0");
     }
 
     /**
@@ -362,12 +362,12 @@ public class ElectricalCircuitSimulationFXMLController implements Initializable 
             new CircuitSplit(0,0)
         };
         //call the calcResistance class with create circuit
-        calcResistance(calcCircuit, calcCircuit.length, 0, false, 0, 0);
+        calcCapacitance(calcCircuit, calcCircuit.length, 0, false, 0, 0);
         //updating the values after calculating
         cp_C1_V.setText("Voltage (V): " + calcCircuit[2].getVoltage());
-        cp_C1_C.setText("Charge (C): " + ((Capacitor)calcCircuit[2]).getCharge());
+        cp_C1_C.setText("Charge (µC): " + ((Capacitor)calcCircuit[2]).getCharge());
         cp_C2_V.setText("Voltage (V): " + calcCircuit[4].getVoltage());
-        cp_C2_C.setText("Charge (C): " + ((Capacitor)calcCircuit[4]).getCharge());
+        cp_C2_C.setText("Charge (µC): " + ((Capacitor)calcCircuit[4]).getCharge());
         
     }
     
@@ -384,9 +384,9 @@ public class ElectricalCircuitSimulationFXMLController implements Initializable 
         };
         calcCapacitance(calcCircuit, calcCircuit.length, 0, false, 0, 0);
         cs_C1_V.setText("Voltage (V): " + calcCircuit[1].getVoltage());
-        cs_C1_C.setText("Charge (C): " + ((Capacitor)calcCircuit[1]).getCharge());
+        cs_C1_C.setText("Charge (µC): " + ((Capacitor)calcCircuit[1]).getCharge());
         cs_C2_V.setText("Voltage (V): " + calcCircuit[2].getVoltage());
-        cs_C2_C.setText("Charge (C): " + ((Capacitor)calcCircuit[2]).getCharge());
+        cs_C2_C.setText("Charge (µC): " + ((Capacitor)calcCircuit[2]).getCharge());
         
     }
     
@@ -408,10 +408,10 @@ public class ElectricalCircuitSimulationFXMLController implements Initializable 
         cs_C1_tf.setText("10.00");
         cs_C2_slider.setValue(20);
         cs_C2_tf.setText("10.00");
-        cs_C1_V.setText("Voltage: 0");
-        cs_C2_V.setText("Voltage: 0");
-        cs_C1_C.setText("Charge: 0");
-        cs_C2_C.setText("Charge: 0");
+        cs_C1_V.setText("Voltage (V): 0");
+        cs_C2_V.setText("Voltage (V): 0");
+        cs_C1_C.setText("Charge (µC): 0");
+        cs_C2_C.setText("Charge (µC): 0");
     }
 
    
@@ -431,10 +431,10 @@ public class ElectricalCircuitSimulationFXMLController implements Initializable 
         cp_C1_tf.setText("10.00");
         cp_C2_slider.setValue(20);
         cp_C2_tf.setText("10.00");
-        cp_C1_V.setText("Voltage: 0");
-        cp_C2_V.setText("Voltage: 0");
-        cp_C1_C.setText("Charge: 0");
-        cp_C2_C.setText("Charge: 0");
+        cp_C1_V.setText("Voltage (V): 0");
+        cp_C2_V.setText("Voltage (V): 0");
+        cp_C1_C.setText("Charge (µC): 0");
+        cp_C2_C.setText("Charge (µC): 0");
     }
 
     /**
@@ -1269,10 +1269,10 @@ public class ElectricalCircuitSimulationFXMLController implements Initializable 
 
             for (Node n : capacitorvb.getChildren()) {
 
-                if (n instanceof Label originalLabel) {
-                    if (originalLabel.getText().equals("Capacitor #"+ counter2 + " Values:")||originalLabel.getText().equals("Capacitor #"+ counter2 + 1 + " Values:")||originalLabel.getText().equals("Capacitor #0 Values:")) {
-                        originalLabel.setText("Capacitor #" + (counter2 + 1) +" Values:");
-                    }
+               if (n instanceof Label originalLabel) {
+            if (originalLabel.getText().equals("Capacitor #"+ counter2 + " Values:")||originalLabel.getText().equals("Capacitor #"+ counter2 + 1 + " Values:")||originalLabel.getText().equals("Capacitor #0 Values:")) {
+                originalLabel.setText("Capacitor #" + (counter2 + 1) +" Values:");
+            }
                     Label lbl = new Label(originalLabel.getText());
                     lbl.setFont(originalLabel.getFont());
                     lbl.setTextFill(originalLabel.getTextFill());
@@ -1304,6 +1304,7 @@ public class ElectricalCircuitSimulationFXMLController implements Initializable 
             copy.setVisible(true);
             ccSidebarVbox.getChildren().add(10 + counter2, copy);
             ccvbs.add(counter2,copy);
+          
             counter2++;
             btnCount2++;
             ImageView newCapacitor = new ImageView("file:src/View/Images/Capacitor.png");
@@ -2084,7 +2085,7 @@ public class ElectricalCircuitSimulationFXMLController implements Initializable 
         calcResistance(calcCircuitcustom1, calcCircuitcustom1.length, 0, false, 0, 0);
         int counter2 = 1;
         
-        System.out.println(rcvbs.size());
+        
         
         for(int i = 0; i < rcvbs.size() + 1 ;i++) {
             if (counter2 >= calcCircuitcustom1.length) {
@@ -2137,7 +2138,7 @@ public class ElectricalCircuitSimulationFXMLController implements Initializable 
         calcCapacitance(calcCircuitcustom2, calcCircuitcustom2.length, 0, false, 0, 0);
         int counter2 = 1;
         
-        System.out.println(ccvbs.size());
+        
         
         for(int i = 0; i < ccvbs.size() + 1 ;i++) {
             if (counter2 >= calcCircuitcustom2.length) {
@@ -2147,7 +2148,7 @@ public class ElectricalCircuitSimulationFXMLController implements Initializable 
             else if (calcCircuitcustom2[counter2] instanceof Capacitor) {
              
             ((Label)ccvbs.get(i).getChildren().get(3)).setText("Voltage (V): " + calcCircuitcustom2[counter2].getVoltage());
-            ((Label)ccvbs.get(i).getChildren().get(4)).setText("Charge (C): " + ((Capacitor)calcCircuitcustom2[counter2]).getCharge());
+            ((Label)ccvbs.get(i).getChildren().get(4)).setText("Charge (µC): " + ((Capacitor)calcCircuitcustom2[counter2]).getCharge());
              
              counter2++;
           } 
@@ -2169,7 +2170,7 @@ public class ElectricalCircuitSimulationFXMLController implements Initializable 
         for(int i = 0; i < counter2;i++) {
             ((TextField)ccvbs.get(i).getChildren().get(2)).setText("10.00");
             ((Label)ccvbs.get(i).getChildren().get(3)).setText("Voltage (V): 0");
-            ((Label)ccvbs.get(i).getChildren().get(4)).setText("Charge (C): 0");
+            ((Label)ccvbs.get(i).getChildren().get(4)).setText("Charge (µC): 0");
     }
     }
     
