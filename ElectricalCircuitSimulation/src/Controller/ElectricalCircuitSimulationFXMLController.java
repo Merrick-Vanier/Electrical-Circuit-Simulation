@@ -1270,7 +1270,7 @@ public class ElectricalCircuitSimulationFXMLController implements Initializable 
             for (Node n : capacitorvb.getChildren()) {
 
                if (n instanceof Label originalLabel) {
-            if (originalLabel.getText().equals("Capacitor #"+ counter2 + " Values:")||originalLabel.getText().equals("Capacitor #"+ counter2 + 1 + " Values:")||originalLabel.getText().equals("Capacitor #0 Values:")) {
+            if (originalLabel.getText().equals("Capacitor #"+ counter2 + " Values:")||originalLabel.getText().equals("Capacitor #"+ (counter2 -1) + " Values:")||originalLabel.getText().equals("Capacitor #0 Values:")) {
                 originalLabel.setText("Capacitor #" + (counter2 + 1) +" Values:");
             }
                     Label lbl = new Label(originalLabel.getText());
